@@ -18,8 +18,19 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-// Mock Data
-const INITIAL_RATES = [
+type Rate = {
+  id: number;
+  origin: string;
+  dest: string;
+  airline: string;
+  baseRate: number;
+  fuelSurcharge: number;
+  handling: number;
+  active: boolean;
+  isNew?: boolean;
+};
+
+const INITIAL_RATES: Rate[] = [
   { id: 1, origin: "PNQ", dest: "MAA", airline: "IndiGo 6E", baseRate: 45, fuelSurcharge: 15, handling: 5, active: true },
   { id: 2, origin: "PNQ", dest: "MAA", airline: "Air India AI", baseRate: 42, fuelSurcharge: 18, handling: 6, active: true },
   { id: 3, origin: "DEL", dest: "BOM", airline: "Vistara UK", baseRate: 35, fuelSurcharge: 12, handling: 5, active: true },

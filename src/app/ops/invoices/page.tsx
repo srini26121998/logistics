@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { INVOICES, formatINR } from "@/data/mockData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { DollarSign, Search, Filter, Plus, FileText, Download, Eye, X } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
 
 export default function InvoiceHistoryPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,6 +25,62 @@ export default function InvoiceHistoryPage() {
     return matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    const newInvoiceId = sessionStorage.getItem('new_invoice_id');
+    if (newInvoiceId) {
+      const newInvoice = INVOICES.find(inv => inv.id === newInvoiceId);
+      if (newInvoice) {
+        setSelectedInvoiceForPdf(newInvoice);
+      }
+      sessionStorage.removeItem('new_invoice_id');
+    }
+  }, []);
+
+  const handleExportReport = () => {
+    const headers = ["Invoice No", "Client", "Issue Date", "Due Date", "Taxable Amount", "Status"];
+    const csvContent = [
+      headers.join(","),
+      ...filteredInvoices.map(inv => 
+        `"${inv.invoiceNo}","${inv.clientName}","${inv.date}","${inv.dueDate}",${inv.taxableAmount},"${inv.status}"`
+      )
+    ].join("\n");
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "invoices_report.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Exported report successfully");
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!selectedInvoiceForPdf) return;
+    const element = document.getElementById("invoice-print-area");
+    if (!element) {
+      toast.error("Invoice area not found");
+      return;
+    }
+    
+    const toastId = toast.loading("Generating PDF...");
+    try {
+      const imgData = await toPng(element, { pixelRatio: 2 });
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (element.offsetHeight * pdfWidth) / element.offsetWidth;
+      
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Invoice_${selectedInvoiceForPdf.invoiceNo.replace(/\//g, "_")}.pdf`);
+      toast.success("PDF Downloaded successfully", { id: toastId });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate PDF", { id: toastId });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -34,7 +92,7 @@ export default function InvoiceHistoryPage() {
           <p className="text-sm text-slate-400 mt-1">Manage billing, payments, and outstanding invoices.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={() => toast.success('Exporting invoice report...')} className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition-colors border border-slate-700">
+          <button onClick={handleExportReport} className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition-colors border border-slate-700">
             <Download className="w-4 h-4" /> Export Report
           </button>
           <Link href="/ops/invoices/generate" className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-medium transition-colors shadow-[0_0_15px_rgba(79,70,229,0.3)]">
@@ -167,7 +225,7 @@ export default function InvoiceHistoryPage() {
                   <FileText className="w-5 h-5 text-emerald-600" /> Invoice {selectedInvoiceForPdf.invoiceNo}
                 </h2>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => { toast.success("Invoice downloaded"); setSelectedInvoiceForPdf(null); }} className="px-3 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-medium hover:bg-slate-700 flex items-center gap-1.5 transition-colors">
+                  <button onClick={handleDownloadPdf} className="px-3 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-medium hover:bg-slate-700 flex items-center gap-1.5 transition-colors">
                     <Download className="w-3.5 h-3.5" /> Download PDF
                   </button>
                   <button
@@ -181,115 +239,171 @@ export default function InvoiceHistoryPage() {
 
               {/* PDF Content Area */}
               <div className="flex-1 overflow-auto bg-slate-100 p-8 flex justify-center custom-scrollbar">
-                <div className="bg-white shadow-lg w-full max-w-[210mm] min-h-[297mm] p-10 flex flex-col font-sans text-sm print-area">
+                <div id="invoice-print-area" className="bg-white shadow-lg w-full max-w-[297mm] min-h-[210mm] p-8 flex flex-col font-sans text-sm print-area">
                   
-                  {/* SVL Letterhead */}
-                  <div className="border-b-2 border-slate-800 pb-6 mb-6">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-1">SVL CARGO</h1>
-                        <p className="text-slate-600 text-xs max-w-sm">
-                          123 Logistics Park, NH-8, Mahipalpur, New Delhi - 110037
-                          <br /> Ph: +91-11-23456789 | Email: billing@svlcargo.com
-                        </p>
-                      </div>
-                      <div className="text-right text-xs text-slate-600 space-y-1">
-                        <p><span className="font-semibold">PAN:</span> AAECS1234F</p>
-                        <p><span className="font-semibold">GSTIN:</span> 07AAECS1234F1Z0</p>
-                        <p><span className="font-semibold">State Code:</span> 07 (Delhi)</p>
+                  {/* Header */}
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="w-1/4">
+                      {/* Professional Logo */}
+                      <div className="w-24 h-24 bg-gradient-to-br from-indigo-900 to-slate-900 rounded-2xl flex items-center justify-center shadow-lg border-2 border-indigo-500/30 transform -rotate-2">
+                        <div className="text-center">
+                          <span className="font-black text-4xl text-white tracking-tighter italic drop-shadow-md">SVL</span>
+                          <div className="h-1 w-12 bg-indigo-500 mx-auto mt-1 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)]"></div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="text-center mb-6">
-                    <h2 className="text-xl font-bold uppercase tracking-widest text-slate-800">Tax Invoice</h2>
+                    <div className="w-1/2 text-center">
+                      <h1 className="text-2xl font-bold tracking-tight text-slate-900 mb-1">SVL CARGO SERVICES</h1>
+                      <p className="text-slate-800 text-xs font-medium">
+                        No. 1, Kather Garden Nehru High Road, Palavanthangal, Chennai - 600 114.
+                      </p>
+                      <p className="text-slate-800 text-xs font-medium mt-1">
+                        E-mail: svlcargo2017@gmail.com PAN: ADJFS2013F
+                      </p>
+                      <p className="text-slate-800 text-xs font-medium mt-1">
+                        GSTIN: 33ADJFS2013F1ZJ STATE: TAMILNADU STATE CODE: 33
+                      </p>
+                      <h2 className="text-lg font-bold uppercase tracking-widest text-slate-900 mt-4 underline underline-offset-4">Tax Invoice</h2>
+                    </div>
+                    <div className="w-1/4"></div>
                   </div>
 
                   {/* Invoice Meta & Billed To */}
-                  <div className="flex justify-between items-start mb-8 border border-slate-300 rounded p-4">
+                  <div className="flex justify-between items-start mb-4">
                     <div className="w-1/2">
-                      <p className="text-xs font-semibold text-slate-500 uppercase mb-1">Billed To</p>
-                      <h3 className="font-bold text-base text-slate-800">{selectedInvoiceForPdf.clientName}</h3>
+                      <p className="text-xs font-bold text-slate-900">To,</p>
+                      <h3 className="font-bold text-sm text-slate-900 mt-1">{selectedInvoiceForPdf.clientName}</h3>
                     </div>
-                    <div className="w-1/2 text-right">
-                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm justify-end">
-                        <div className="font-semibold text-slate-600">Invoice No:</div>
-                        <div className="font-bold text-slate-900">{selectedInvoiceForPdf.invoiceNo}</div>
-                        <div className="font-semibold text-slate-600">Invoice Date:</div>
-                        <div className="font-medium">{selectedInvoiceForPdf.date}</div>
-                        <div className="font-semibold text-slate-600">Due Date:</div>
-                        <div className="font-medium">{selectedInvoiceForPdf.dueDate}</div>
+                    <div className="w-1/3 text-right">
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-xs justify-end font-bold text-slate-900">
+                        <div className="text-right">INVOICE NO :</div>
+                        <div className="text-left">{selectedInvoiceForPdf.invoiceNo}</div>
+                        <div className="text-right">INVOICE DATE :</div>
+                        <div className="text-left">{selectedInvoiceForPdf.date}</div>
+                        <div className="text-right">SAC CODE :</div>
+                        <div className="text-left">996531</div>
                       </div>
                     </div>
                   </div>
 
                   {/* Line Items Table */}
-                  <div className="mb-8 flex-1">
-                    <table className="w-full text-left text-xs border-collapse">
+                  <div className="mb-4 flex-1">
+                    <table className="w-full text-center text-[10px] border-collapse border border-slate-400">
                       <thead>
-                        <tr className="bg-slate-100 border-y-2 border-slate-800">
-                          <th className="py-2 px-2 font-semibold">Description</th>
-                          <th className="py-2 px-2 font-semibold text-center">AWBs</th>
-                          <th className="py-2 px-2 font-semibold text-right">Taxable Amt</th>
-                          <th className="py-2 px-2 font-semibold text-right">Total Amt</th>
+                        <tr className="bg-slate-100 font-bold border-b border-slate-400">
+                          <th className="py-1 px-1 border-r border-slate-400">Sr.</th>
+                          <th className="py-1 px-1 border-r border-slate-400">CN DT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">CN NO.</th>
+                          <th className="py-1 px-1 border-r border-slate-400">FLIGHT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">ORIGIN</th>
+                          <th className="py-1 px-1 border-r border-slate-400">DEST</th>
+                          <th className="py-1 px-1 border-r border-slate-400">NOP</th>
+                          <th className="py-1 px-1 border-r border-slate-400">CH.WT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">RATE</th>
+                          <th className="py-1 px-1 border-r border-slate-400">FREIGHT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">OTHER CHARGES</th>
+                          <th className="py-1 px-1 border-r border-slate-400">GROSS</th>
+                          <th className="py-1 px-1 border-r border-slate-400">TAXABLE AMOUNT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">IGST 18%</th>
+                          <th className="py-1 px-1">NET PAYABLE</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-200">
-                        <tr>
-                          <td className="py-4 px-2">
-                            <p className="font-medium text-slate-800">Consolidated Freight Services</p>
-                            <p className="text-slate-500 mt-1 text-[10px]">Logistics and transportation services for the specified period.</p>
-                          </td>
-                          <td className="py-4 px-2 text-center text-slate-700">{selectedInvoiceForPdf.awbCount}</td>
-                          <td className="py-4 px-2 text-right font-mono text-slate-800">{formatINR(selectedInvoiceForPdf.taxableAmount)}</td>
-                          <td className="py-4 px-2 text-right font-mono text-slate-800 font-medium">{formatINR(selectedInvoiceForPdf.taxableAmount)}</td>
+                      <tbody className="divide-y divide-slate-300">
+                        {Array.from({ length: selectedInvoiceForPdf.awbCount }).map((_, idx) => {
+                          // Mocking line item data to look like real rows
+                          const freight = Math.round(selectedInvoiceForPdf.taxableAmount / selectedInvoiceForPdf.awbCount * 0.7);
+                          const other = Math.round(selectedInvoiceForPdf.taxableAmount / selectedInvoiceForPdf.awbCount * 0.3);
+                          const taxable = freight + other;
+                          const igst = taxable * 0.18;
+                          const net = taxable + igst;
+                          return (
+                            <tr key={idx} className="border-b border-slate-400">
+                              <td className="py-1.5 px-1 border-r border-slate-400">{idx + 1}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">03-May</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">2729309{idx}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">6E 321</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">PNQ</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">BLR</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">5</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">101</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">18.00</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{freight.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{other.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{taxable.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{taxable.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{igst.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 text-right">{net.toFixed(2)}</td>
+                            </tr>
+                          );
+                        })}
+                        {/* Grand Total Row */}
+                        <tr className="border-b border-slate-400 font-bold bg-slate-50">
+                          <td colSpan={6} className="py-2 px-1 border-r border-slate-400 text-right">Total</td>
+                          <td className="py-2 px-1 border-r border-slate-400">10</td>
+                          <td className="py-2 px-1 border-r border-slate-400">123</td>
+                          <td className="py-2 px-1 border-r border-slate-400">42.00</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{(selectedInvoiceForPdf.taxableAmount * 0.7).toFixed(2)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{(selectedInvoiceForPdf.taxableAmount * 0.3).toFixed(2)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{selectedInvoiceForPdf.taxableAmount.toFixed(2)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{selectedInvoiceForPdf.taxableAmount.toFixed(2)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{(selectedInvoiceForPdf.total - selectedInvoiceForPdf.taxableAmount).toFixed(2)}</td>
+                          <td className="py-2 px-1 text-right">{selectedInvoiceForPdf.total.toFixed(2)}</td>
+                        </tr>
+                        <tr className="border-b border-slate-400 font-bold">
+                          <td colSpan={14} className="py-2 px-1 border-r border-slate-400 text-right">Net Payable</td>
+                          <td className="py-2 px-1 text-right">{selectedInvoiceForPdf.total.toFixed(2)}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
 
-                  {/* Totals Section */}
-                  <div className="flex justify-end mb-8">
-                    <div className="w-72 border-t-2 border-slate-800 pt-2">
-                      <div className="flex justify-between py-1 text-sm">
-                        <span className="font-semibold text-slate-600">Total Taxable Value</span>
-                        <span className="font-medium text-slate-900">{formatINR(selectedInvoiceForPdf.taxableAmount)}</span>
-                      </div>
-                      <div className="flex justify-between py-1 text-sm">
-                        <span className="font-semibold text-slate-600">IGST @ 18%</span>
-                        <span className="font-medium text-slate-900">{formatINR(selectedInvoiceForPdf.total - selectedInvoiceForPdf.taxableAmount)}</span>
-                      </div>
-                      <div className="flex justify-between py-2 text-base border-t border-slate-300 mt-1">
-                        <span className="font-bold text-slate-800">Grand Total</span>
-                        <span className="font-bold text-slate-900">{formatINR(selectedInvoiceForPdf.total)}</span>
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Footer Notes & Bank Details */}
-                  <div className="grid grid-cols-2 gap-8 text-xs mt-auto pt-8 border-t border-slate-300">
-                    <div>
-                      <h4 className="font-bold text-slate-800 mb-2">Terms & Conditions</h4>
-                      <ol className="list-decimal pl-4 space-y-1 text-slate-600">
-                        <li>Any discrepancy must be reported within 3 days.</li>
-                        <li>Payment window is 5 days from the date of invoice.</li>
+                  <div className="flex gap-4 text-xs mt-4">
+                    <div className="w-1/2 border border-slate-400 p-2">
+                      <h4 className="font-bold text-slate-900 mb-1">Terms & conditions:</h4>
+                      <ol className="list-decimal pl-4 space-y-1 text-[10px] text-slate-800 font-bold">
+                        <li>Difference or any Discrepency in Bill must be informed within 3 days from receipt of the Bill.</li>
+                        <li>Payment should be made with in 5 days from receipt of the Bill.</li>
+                        <li>Interest @ 24% P.A. will be charged if the bill is not paid on prescribed time limit mentioned above.</li>
+                        <li>Payment should be made compulsorily by A/c payee Cheque / DD in fav of "SVL CARGO SERVICES".</li>
+                        <li>Subject to Chennai Jurisdiction only.</li>
+                        <li>This is a computer generated invoice and does not require any signature.</li>
                       </ol>
                     </div>
-                    <div className="bg-slate-50 p-3 rounded border border-slate-200">
-                      <h4 className="font-bold text-slate-800 mb-2">Bank Details</h4>
-                      <div className="grid grid-cols-[100px_1fr] gap-1 text-slate-700">
-                        <div className="font-semibold">Bank Name:</div>
-                        <div>HDFC Bank</div>
-                        <div className="font-semibold">Account No:</div>
-                        <div className="font-medium">50200034478826</div>
+                    <div className="w-1/2 flex flex-col justify-between">
+                      <div className="border border-slate-400 p-2 font-bold text-[10px] text-slate-800">
+                        <h4 className="font-bold text-slate-900 mb-1 border-b border-slate-400 pb-1">Bank Details :</h4>
+                        <div className="grid grid-cols-[150px_1fr] gap-y-1 mt-1">
+                          <div>M/s.SVL CARGO SERVICES,</div>
+                          <div></div>
+                          <div>HDFC BANK LIMITED, NANGANALLUR, BRANCH, CHENNAI-600061, TAMILNADU, INDIA.</div>
+                          <div></div>
+                          <div>IFSC CODE: HDFC0000674</div>
+                          <div>Account Number: 50200034478826</div>
+                        </div>
+                      </div>
+                      <div className="text-right text-xs text-slate-900 font-bold mt-4 relative">
+                        {/* Company Seal */}
+                        <div className="absolute right-20 bottom-10 w-24 h-24 border-4 border-indigo-600/30 rounded-full flex items-center justify-center -rotate-12 pointer-events-none mix-blend-multiply">
+                          <div className="border-2 border-indigo-600/30 w-[84px] h-[84px] rounded-full flex items-center justify-center text-center">
+                            <span className="text-indigo-700/40 font-black text-[10px] tracking-widest uppercase transform leading-tight">
+                              SVL CARGO <br/> SERVICES <br/> OFFICIAL
+                            </span>
+                          </div>
+                        </div>
+                        
+                        For - SVL CARGO SERVICES
+                        
+                        {/* Signature */}
+                        <div className="h-16 flex items-end justify-end mt-1 mb-2 relative z-10">
+                          <span style={{ fontFamily: "'Brush Script MT', 'Bradley Hand', cursive" }} className="text-3xl text-blue-900/80 transform -rotate-6">
+                            S. Vijay Kumar
+                          </span>
+                        </div>
+                        
+                        Authorized Signatory
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="mt-8 text-right text-xs text-slate-500 font-semibold pt-4">
-                    For SVL CARGO
-                    <br /><br /><br />
-                    Authorized Signatory
                   </div>
                 </div>
               </div>

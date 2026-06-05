@@ -9,6 +9,10 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { INVOICES } from "@/data/mockData";
+import AirWaybillPreview from "@/components/ui/AirWaybillPreview";
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
 
 // Mock Data
 const CLIENTS = [
@@ -32,6 +36,10 @@ export default function GenerateInvoicePage() {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState("This Month");
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  const [showAwbCopyModal, setShowAwbCopyModal] = useState(false);
+  const [selectedAwbDetails, setSelectedAwbDetails] = useState<any>(null);
 
   const [isDownloading, setIsDownloading] = useState(false);
   const [isEmailing, setIsEmailing] = useState(false);
@@ -52,6 +60,13 @@ export default function GenerateInvoicePage() {
     }
   };
 
+  const handleAutoMatch = () => {
+    // Select all AWBs that have a "Ready" status
+    const readyIds = filteredAwbs.filter(a => a.status === 'Ready').map(a => a.id);
+    setSelectedAwbs(readyIds);
+    toast.success(`Auto-matched ${readyIds.length} ready shipments`);
+  };
+
   const toggleAwb = (id: string) => {
     if (selectedAwbs.includes(id)) {
       setSelectedAwbs(selectedAwbs.filter((a) => a !== id));
@@ -64,19 +79,55 @@ export default function GenerateInvoicePage() {
     setTimeout(action, delay);
   };
 
-  const handleDownload = (format: 'pdf' | 'csv' | 'excel' = 'pdf') => {
+  const handleDownload = async (format: 'pdf' | 'csv' | 'excel' = 'pdf') => {
     if (selectedAwbs.length === 0) {
       toast.error("Please select at least one AWB.");
       return;
     }
-    setIsDownloading(true);
     setExportMenuOpen(false);
-    toast.info(`Generating ${format.toUpperCase()} invoice...`);
-    
-    simulateAction(() => {
-      setIsDownloading(false);
-      toast.success(`Invoice ${format.toUpperCase()} downloaded successfully`);
-    });
+
+    if (format === 'pdf') {
+      const element = document.getElementById("invoice-print-area");
+      if (!element) {
+        toast.error("Please open the preview first to generate PDF");
+        return;
+      }
+      const toastId = toast.loading("Generating PDF...");
+      try {
+        const imgData = await toPng(element, { pixelRatio: 2 });
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (element.offsetHeight * pdfWidth) / element.offsetWidth;
+        
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`Invoice_${selectedClient.name.replace(/\s+/g, '_')}.pdf`);
+        toast.success("PDF Downloaded successfully", { id: toastId });
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to generate PDF", { id: toastId });
+      }
+    } else {
+      // CSV Export
+      const headers = ["AWB No", "Date", "Flight", "Origin", "Destination", "Pieces", "Weight", "Rate", "Freight", "Other Charges", "Total"];
+      const csvContent = [
+        headers.join(","),
+        ...selectedItems.map(item => 
+          `"${item.cnNo}","${item.cnDate}","${item.flight}","${item.origin}","${item.dest}",${item.nop},${item.chWt},${item.rate},${item.freight},${item.otherCharges},${item.freight + item.otherCharges}`
+        ),
+        `"TOTAL","","","","","","",${totals.freight},${totals.otherCharges},${totals.taxableAmount}`
+      ].join("\n");
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Invoice_Data_${selectedClient.name.replace(/\s+/g, '_')}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success(`${format.toUpperCase()} Exported successfully`);
+    }
   };
 
   const handleEmail = () => {
@@ -100,6 +151,28 @@ export default function GenerateInvoicePage() {
     setIsMarkingSent(true);
     toast.info("Updating system records...");
     simulateAction(() => {
+      // Create the new dynamic invoice
+      const newInvoiceId = `inv-${Date.now()}`;
+      const newInvoiceNo = `SVL/${Math.floor(Math.random() * 900) + 100}/26-27`;
+      
+      const newInvoice = {
+        id: newInvoiceId,
+        invoiceNo: newInvoiceNo,
+        clientId: selectedClient.id,
+        clientName: selectedClient.name,
+        date: new Date().toISOString().split('T')[0],
+        dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        awbCount: selectedAwbs.length,
+        taxableAmount: totals.taxableAmount,
+        gst: igst,
+        total: netPayable,
+        status: 'Sent' as const,
+        paidAmount: 0
+      };
+
+      INVOICES.unshift(newInvoice);
+      sessionStorage.setItem('new_invoice_id', newInvoiceId);
+
       setIsMarkingSent(false);
       toast.success("Invoice marked as sent and logged in system");
       router.push("/ops/invoices");
@@ -422,7 +495,10 @@ export default function GenerateInvoicePage() {
                   <span>Select All</span>
                 </button>
                 <div className="h-4 w-px bg-slate-700"></div>
-                <button className="flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-fuchsia-400 transition-colors">
+                <button 
+                  onClick={handleAutoMatch}
+                  className="flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-fuchsia-400 transition-colors"
+                >
                   <Sparkles className="w-3.5 h-3.5" /> Auto-match pending
                 </button>
               </div>
@@ -535,10 +611,84 @@ export default function GenerateInvoicePage() {
                                 </span>
                               </div>
                             </td>
-                            <td className="px-4 py-4 whitespace-nowrap text-right" onClick={(e) => e.stopPropagation()}>
-                              <button className="p-1.5 text-slate-500 hover:text-white hover:bg-slate-800 rounded-md transition-colors">
+                            <td className="px-4 py-4 whitespace-nowrap text-right relative" onClick={(e) => e.stopPropagation()}>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveDropdown(activeDropdown === item.id ? null : item.id);
+                                }}
+                                className={`p-1.5 rounded-md transition-colors relative z-50 ${activeDropdown === item.id ? 'text-white bg-slate-700' : 'text-slate-500 hover:text-white hover:bg-slate-800'}`}
+                              >
                                 <MoreHorizontal className="w-4 h-4" />
                               </button>
+                              
+                              <AnimatePresence>
+                                {activeDropdown === item.id && (
+                                  <>
+                                    <div 
+                                      className="fixed inset-0 z-40" 
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveDropdown(null);
+                                      }} 
+                                    />
+                                    <motion.div
+                                      initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                                      exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                                      transition={{ duration: 0.15 }}
+                                      className="absolute right-8 top-10 w-48 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden"
+                                    >
+                                    <div className="py-1">
+                                      <button 
+                                        className="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-700 transition-colors flex items-center gap-2"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          toast.info(`Viewing details for ${item.cnNo}`);
+                                          setActiveDropdown(null);
+                                        }}
+                                      >
+                                        <Eye className="w-4 h-4" /> View Details
+                                      </button>
+                                      <button 
+                                        className="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-700 transition-colors flex items-center gap-2"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setSelectedAwbDetails(item);
+                                          setShowAwbCopyModal(true);
+                                          setActiveDropdown(null);
+                                        }}
+                                      >
+                                        <Download className="w-4 h-4" /> Download Copy
+                                      </button>
+                                      {isSelected ? (
+                                        <button 
+                                          className="w-full text-left px-4 py-2.5 text-sm text-rose-400 hover:text-rose-300 hover:bg-slate-700 transition-colors flex items-center gap-2 border-t border-slate-700"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleAwb(item.id);
+                                            setActiveDropdown(null);
+                                          }}
+                                        >
+                                          <X className="w-4 h-4" /> Remove from Invoice
+                                        </button>
+                                      ) : (
+                                        <button 
+                                          className="w-full text-left px-4 py-2.5 text-sm text-emerald-400 hover:text-emerald-300 hover:bg-slate-700 transition-colors flex items-center gap-2 border-t border-slate-700"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleAwb(item.id);
+                                            setActiveDropdown(null);
+                                          }}
+                                        >
+                                          <CheckSquare className="w-4 h-4" /> Add to Invoice
+                                        </button>
+                                      )}
+                                    </div>
+                                  </motion.div>
+                                  </>
+                                )}
+                              </AnimatePresence>
                             </td>
                           </motion.tr>
                         );
@@ -600,168 +750,220 @@ export default function GenerateInvoicePage() {
 
               {/* PDF Content Area */}
               <div className="flex-1 overflow-auto bg-slate-200/50 p-4 sm:p-8 flex justify-center custom-scrollbar relative">
-                {/* The "A4" Page */}
-                <div className="bg-white shadow-2xl w-full max-w-[210mm] min-h-[297mm] p-10 flex flex-col font-sans text-sm print-area relative">
+                {/* The "A4" Page Landscape */}
+                <div id="invoice-print-area" className="bg-white shadow-2xl w-full max-w-[297mm] min-h-[210mm] p-8 flex flex-col font-sans text-sm print-area relative">
                   
-                  {/* Subtle Watermark */}
-                  <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.03] overflow-hidden z-0">
-                    <h1 className="text-[150px] font-black transform -rotate-45 tracking-tighter">SVL CARGO</h1>
+                  {/* Header */}
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="w-1/4">
+                      {/* Professional Logo */}
+                      <div className="w-24 h-24 bg-gradient-to-br from-indigo-900 to-slate-900 rounded-2xl flex items-center justify-center shadow-lg border-2 border-indigo-500/30 transform -rotate-2">
+                        <div className="text-center">
+                          <span className="font-black text-4xl text-white tracking-tighter italic drop-shadow-md">SVL</span>
+                          <div className="h-1 w-12 bg-indigo-500 mx-auto mt-1 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)]"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-1/2 text-center">
+                      <h1 className="text-2xl font-bold tracking-tight text-slate-900 mb-1">SVL CARGO SERVICES</h1>
+                      <p className="text-slate-800 text-xs font-medium">
+                        No. 1, Kather Garden Nehru High Road, Palavanthangal, Chennai - 600 114.
+                      </p>
+                      <p className="text-slate-800 text-xs font-medium mt-1">
+                        E-mail: svlcargo2017@gmail.com PAN: ADJFS2013F
+                      </p>
+                      <p className="text-slate-800 text-xs font-medium mt-1">
+                        GSTIN: 33ADJFS2013F1ZJ STATE: TAMILNADU STATE CODE: 33
+                      </p>
+                      <h2 className="text-lg font-bold uppercase tracking-widest text-slate-900 mt-4 underline underline-offset-4">Tax Invoice</h2>
+                    </div>
+                    <div className="w-1/4"></div>
                   </div>
 
-                  <div className="relative z-10 flex-1 flex flex-col">
-                    {/* SVL Letterhead */}
-                    <div className="border-b-4 border-slate-900 pb-6 mb-8 flex justify-between items-start">
-                      <div className="flex gap-4 items-center">
-                        <div className="w-16 h-16 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black text-2xl shadow-lg">
-                          SVL
-                        </div>
-                        <div>
-                          <h1 className="text-3xl font-black tracking-tighter text-slate-900 mb-1">SVL CARGO</h1>
-                          <p className="text-slate-500 text-xs max-w-sm font-medium">
-                            123 Logistics Park, NH-8, Mahipalpur<br />
-                            New Delhi - 110037, India<br />
-                            <span className="text-slate-700 font-semibold">contact@svlcargo.com | +91-11-23456789</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right text-xs text-slate-600 space-y-1.5 bg-slate-50 p-3 rounded-lg border border-slate-100">
-                        <p><span className="font-bold text-slate-800">PAN:</span> AAECS1234F</p>
-                        <p><span className="font-bold text-slate-800">GSTIN:</span> 07AAECS1234F1Z0</p>
-                        <p><span className="font-bold text-slate-800">State:</span> 07 (Delhi)</p>
+                  {/* Invoice Meta & Billed To */}
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="w-1/2">
+                      <p className="text-xs font-bold text-slate-900">To,</p>
+                      <h3 className="font-bold text-sm text-slate-900 mt-1">{selectedClient.name}</h3>
+                    </div>
+                    <div className="w-1/3 text-right">
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-xs justify-end font-bold text-slate-900">
+                        <div className="text-right">INVOICE NO :</div>
+                        <div className="text-left">SVL/000/26-27</div>
+                        <div className="text-right">INVOICE DATE :</div>
+                        <div className="text-left">{new Date().toLocaleDateString('en-GB')}</div>
+                        <div className="text-right">SAC CODE :</div>
+                        <div className="text-left">996531</div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="text-center mb-8 relative">
-                      <div className="absolute top-1/2 left-0 w-full h-px bg-slate-200 -z-10"></div>
-                      <h2 className="text-2xl font-black uppercase tracking-[0.2em] text-slate-900 bg-white inline-block px-6">Tax Invoice</h2>
-                    </div>
-
-                    {/* Invoice Meta & Billed To */}
-                    <div className="flex justify-between items-stretch mb-8 gap-6">
-                      <div className="w-1/2 border border-slate-200 rounded-xl p-5 bg-slate-50/50">
-                        <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-2 flex items-center gap-1"><Building className="w-3 h-3"/> Bill To</p>
-                        <h3 className="font-black text-lg text-slate-900 mb-1">{selectedClient.name}</h3>
-                        <p className="text-sm text-slate-600 font-medium">
-                          GSTIN: <span className="text-slate-800 font-bold">{selectedClient.gstin}</span><br />
-                          State Code: <span className="text-slate-800 font-bold">{selectedClient.stateCode}</span>
-                        </p>
-                      </div>
-                      <div className="w-1/2 border border-slate-200 rounded-xl p-5 bg-slate-50/50 relative overflow-hidden">
-                        <QrCode className="absolute -right-4 -bottom-4 w-24 h-24 text-slate-100" />
-                        <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm relative z-10">
-                          <div className="font-bold text-slate-500 uppercase text-xs tracking-wider">Invoice No</div>
-                          <div className="font-black text-slate-900 text-right">SVL/000/26-27</div>
-                          
-                          <div className="font-bold text-slate-500 uppercase text-xs tracking-wider">Date</div>
-                          <div className="font-bold text-slate-800 text-right">13-Oct-2026</div>
-                          
-                          <div className="font-bold text-slate-500 uppercase text-xs tracking-wider">Due Date</div>
-                          <div className="font-bold text-rose-600 text-right">18-Oct-2026</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Line Items Table */}
-                    <div className="mb-8 flex-1">
-                      <table className="w-full text-left text-xs border-collapse">
-                        <thead>
-                          <tr className="bg-slate-900 text-white">
-                            <th className="py-3 px-3 font-bold w-10 rounded-tl-lg">#</th>
-                            <th className="py-3 px-3 font-bold">AWB Details</th>
-                            <th className="py-3 px-3 font-bold">Route & Flight</th>
-                            <th className="py-3 px-3 font-bold text-right">Metrics</th>
-                            <th className="py-3 px-3 font-bold text-right">Freight</th>
-                            <th className="py-3 px-3 font-bold text-right">Other</th>
-                            <th className="py-3 px-3 font-bold text-right rounded-tr-lg">Taxable</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-200 border-x border-b border-slate-200 rounded-b-lg">
-                          {selectedItems.map((item, idx) => (
-                            <tr key={item.id} className="hover:bg-slate-50 transition-colors">
-                              <td className="py-3 px-3 text-slate-500 font-medium">{idx + 1}</td>
-                              <td className="py-3 px-3">
-                                <div className="font-bold text-slate-900">{item.cnNo}</div>
-                                <div className="text-[10px] text-slate-500">{item.cnDate}</div>
-                              </td>
-                              <td className="py-3 px-3">
-                                <div className="font-bold text-slate-700">{item.origin} → {item.dest}</div>
-                                <div className="text-[10px] text-slate-500">{item.flight}</div>
-                              </td>
-                              <td className="py-3 px-3 text-right">
-                                <div className="font-semibold text-slate-800">{item.chWt} kg</div>
-                                <div className="text-[10px] text-slate-500">{item.nop} pcs</div>
-                              </td>
-                              <td className="py-3 px-3 text-right font-medium">{formatIndianNumber(item.freight, true)}</td>
-                              <td className="py-3 px-3 text-right font-medium">{formatIndianNumber(item.otherCharges, true)}</td>
-                              <td className="py-3 px-3 text-right font-bold text-slate-900">
-                                {formatIndianNumber(item.freight + item.otherCharges, true)}
-                              </td>
+                  {/* Line Items Table */}
+                  <div className="mb-4 flex-1">
+                    <table className="w-full text-center text-[10px] border-collapse border border-slate-400">
+                      <thead>
+                        <tr className="bg-slate-100 font-bold border-b border-slate-400">
+                          <th className="py-1 px-1 border-r border-slate-400">Sr.</th>
+                          <th className="py-1 px-1 border-r border-slate-400">CN DT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">CN NO.</th>
+                          <th className="py-1 px-1 border-r border-slate-400">FLIGHT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">ORIGIN</th>
+                          <th className="py-1 px-1 border-r border-slate-400">DEST</th>
+                          <th className="py-1 px-1 border-r border-slate-400">NOP</th>
+                          <th className="py-1 px-1 border-r border-slate-400">CH.WT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">RATE</th>
+                          <th className="py-1 px-1 border-r border-slate-400">FREIGHT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">OTHER CHARGES</th>
+                          <th className="py-1 px-1 border-r border-slate-400">GROSS</th>
+                          <th className="py-1 px-1 border-r border-slate-400">TAXABLE AMOUNT</th>
+                          <th className="py-1 px-1 border-r border-slate-400">IGST 18%</th>
+                          <th className="py-1 px-1">NET PAYABLE</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-300">
+                        {selectedItems.map((item, idx) => {
+                          const taxable = item.freight + item.otherCharges;
+                          const igstAmt = taxable * 0.18;
+                          const netAmt = taxable + igstAmt;
+                          return (
+                            <tr key={idx} className="border-b border-slate-400">
+                              <td className="py-1.5 px-1 border-r border-slate-400">{idx + 1}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">{item.cnDate.split('-').slice(0,2).join('-')}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">{item.cnNo.split('-')[1]}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">{item.flight.replace('-', ' ')}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">{item.origin}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">{item.dest}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">{item.nop}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400">{item.chWt}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{item.rate.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{item.freight.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{item.otherCharges.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{taxable.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{taxable.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 border-r border-slate-400 text-right">{igstAmt.toFixed(2)}</td>
+                              <td className="py-1.5 px-1 text-right">{netAmt.toFixed(2)}</td>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {/* Totals Section */}
-                    <div className="flex justify-between items-end mb-10">
-                      <div className="w-1/2 pr-8">
-                         <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                           <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1">
-                             <ShieldCheck className="w-4 h-4 text-emerald-500" /> Payment Info
-                           </p>
-                           <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                             Please make all payments payable to <span className="font-bold text-slate-900">SVL CARGO</span>.<br/>
-                             NEFT/RTGS Transfer details:<br/>
-                             A/C: <span className="font-mono font-bold">50200034478826</span> | IFSC: <span className="font-mono font-bold">HDFC0000674</span>
-                           </p>
-                         </div>
-                      </div>
-                      <div className="w-72 bg-slate-50 rounded-xl border border-slate-200 overflow-hidden">
-                        <div className="p-4 space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="font-bold text-slate-600">Total Taxable</span>
-                            <span className="font-bold text-slate-900">{formatINR(totals.taxableAmount)}</span>
-                          </div>
-                          <div className="flex justify-between text-sm">
-                            <span className="font-bold text-slate-600">IGST (18%)</span>
-                            <span className="font-bold text-slate-900">{formatINR(igst)}</span>
-                          </div>
-                        </div>
-                        <div className="bg-slate-900 p-4 text-white flex justify-between items-center">
-                          <span className="font-black uppercase tracking-wider text-sm">Total Due</span>
-                          <span className="font-black text-xl">{formatINR(netPayable)}</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="text-xs font-medium text-slate-600 italic mb-8">
-                      Amount in words: Rupees {formatIndianNumber(Math.floor(netPayable), true)} Only
-                    </div>
-
-                    {/* Footer Notes & Signature */}
-                    <div className="mt-auto pt-8 border-t-2 border-slate-200 flex justify-between items-end">
-                      <div className="max-w-md">
-                        <h4 className="font-bold text-slate-900 mb-2 uppercase tracking-wider text-[10px]">Terms & Conditions</h4>
-                        <ol className="list-decimal pl-4 space-y-1 text-[10px] text-slate-500 font-medium">
-                          <li>Discrepancies must be reported within 3 working days.</li>
-                          <li>Payment is strictly due within 5 days from invoice date.</li>
-                          <li>Interest @ 24% p.a. applicable on delayed payments.</li>
-                          <li>All disputes subject to New Delhi Jurisdiction.</li>
-                        </ol>
-                      </div>
-                      <div className="text-center">
-                        <div className="w-40 h-16 border-b border-slate-400 mb-2 flex items-end justify-center pb-2">
-                          {/* Signature Placeholder */}
-                          <span className="font-['Brush_Script_MT',cursive] text-2xl text-slate-800 transform -rotate-6">SVL Auth</span>
-                        </div>
-                        <div className="text-[10px] font-bold text-slate-800 uppercase tracking-widest">
-                          Authorized Signatory<br/>
-                          <span className="text-slate-500">For SVL CARGO</span>
-                        </div>
-                      </div>
-                    </div>
-
+                          );
+                        })}
+                        {/* Grand Total Row */}
+                        <tr className="border-b border-slate-400 font-bold bg-slate-50">
+                          <td colSpan={6} className="py-2 px-1 border-r border-slate-400 text-right">Total</td>
+                          <td className="py-2 px-1 border-r border-slate-400">{selectedItems.reduce((acc, curr) => acc + curr.nop, 0)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400">{selectedItems.reduce((acc, curr) => acc + curr.chWt, 0)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400"></td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{totals.freight.toFixed(2)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{totals.otherCharges.toFixed(2)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{totals.taxableAmount.toFixed(2)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{totals.taxableAmount.toFixed(2)}</td>
+                          <td className="py-2 px-1 border-r border-slate-400 text-right">{igst.toFixed(2)}</td>
+                          <td className="py-2 px-1 text-right">{netPayable.toFixed(2)}</td>
+                        </tr>
+                        <tr className="border-b border-slate-400 font-bold">
+                          <td colSpan={14} className="py-2 px-1 border-r border-slate-400 text-right">Net Payable</td>
+                          <td className="py-2 px-1 text-right">{netPayable.toFixed(2)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
+
+                  {/* Footer Notes & Bank Details */}
+                  <div className="flex gap-4 text-xs mt-4">
+                    <div className="w-1/2 border border-slate-400 p-2">
+                      <h4 className="font-bold text-slate-900 mb-1">Terms & conditions:</h4>
+                      <ol className="list-decimal pl-4 space-y-1 text-[10px] text-slate-800 font-bold">
+                        <li>Difference or any Discrepency in Bill must be informed within 3 days from receipt of the Bill.</li>
+                        <li>Payment should be made with in 5 days from receipt of the Bill.</li>
+                        <li>Interest @ 24% P.A. will be charged if the bill is not paid on prescribed time limit mentioned above.</li>
+                        <li>Payment should be made compulsorily by A/c payee Cheque / DD in fav of "SVL CARGO SERVICES".</li>
+                        <li>Subject to Chennai Jurisdiction only.</li>
+                        <li>This is a computer generated invoice and does not require any signature.</li>
+                      </ol>
+                    </div>
+                    <div className="w-1/2 flex flex-col justify-between">
+                      <div className="border border-slate-400 p-2 font-bold text-[10px] text-slate-800">
+                        <h4 className="font-bold text-slate-900 mb-1 border-b border-slate-400 pb-1">Bank Details :</h4>
+                        <div className="grid grid-cols-[150px_1fr] gap-y-1 mt-1">
+                          <div>M/s.SVL CARGO SERVICES,</div>
+                          <div></div>
+                          <div>HDFC BANK LIMITED, NANGANALLUR, BRANCH, CHENNAI-600061, TAMILNADU, INDIA.</div>
+                          <div></div>
+                          <div>IFSC CODE: HDFC0000674</div>
+                          <div>Account Number: 50200034478826</div>
+                        </div>
+                      </div>
+                      <div className="text-right text-xs text-slate-900 font-bold mt-4 relative">
+                        {/* Company Seal */}
+                        <div className="absolute right-20 bottom-10 w-24 h-24 border-4 border-indigo-600/30 rounded-full flex items-center justify-center -rotate-12 pointer-events-none mix-blend-multiply">
+                          <div className="border-2 border-indigo-600/30 w-[84px] h-[84px] rounded-full flex items-center justify-center text-center">
+                            <span className="text-indigo-700/40 font-black text-[10px] tracking-widest uppercase transform leading-tight">
+                              SVL CARGO <br/> SERVICES <br/> OFFICIAL
+                            </span>
+                          </div>
+                        </div>
+                        
+                        For - SVL CARGO SERVICES
+                        
+                        {/* Signature */}
+                        <div className="h-16 flex items-end justify-end mt-1 mb-2 relative z-10">
+                          <span style={{ fontFamily: "'Brush Script MT', 'Bradley Hand', cursive" }} className="text-3xl text-blue-900/80 transform -rotate-6">
+                            S. Vijay Kumar
+                          </span>
+                        </div>
+                        
+                        Authorized Signatory
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* AWB Preview Modal */}
+      <AnimatePresence>
+        {showAwbCopyModal && selectedAwbDetails && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white text-slate-900 rounded-2xl shadow-2xl w-full max-w-5xl h-[92vh] flex flex-col overflow-hidden relative"
+            >
+              {/* Modal Header */}
+              <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shadow-sm z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+                    <FileDigit className="w-4 h-4 text-indigo-600" />
+                  </div>
+                  <h2 className="text-lg font-bold text-slate-800 tracking-tight">AWB Copy: {selectedAwbDetails.cnNo}</h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => toast.success("AWB PDF Downloaded")} className="p-2 hover:bg-indigo-50 text-indigo-600 rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold">
+                    <Download className="w-4 h-4" /> <span className="hidden sm:inline">Download</span>
+                  </button>
+                  <button onClick={() => window.print()} className="p-2 hover:bg-indigo-50 text-indigo-600 rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold">
+                    <Printer className="w-4 h-4" /> <span className="hidden sm:inline">Print</span>
+                  </button>
+                  <div className="w-px h-6 bg-slate-300 mx-1"></div>
+                  <button
+                    onClick={() => {
+                      setShowAwbCopyModal(false);
+                      setSelectedAwbDetails(null);
+                    }}
+                    className="p-2 hover:bg-slate-200 rounded-lg text-slate-500 transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* PDF Content Area */}
+              <div className="flex-1 overflow-auto bg-slate-200/50 p-4 sm:p-8 flex justify-center custom-scrollbar relative">
+                <div className="bg-white shadow-2xl w-full max-w-[210mm] p-4 flex flex-col font-sans print-area relative">
+                   <AirWaybillPreview awb={selectedAwbDetails} />
                 </div>
               </div>
             </motion.div>

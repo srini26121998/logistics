@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 
 import { useParams } from "next/navigation";
+import { SHIPMENTS, AIRPORTS } from "@/data/mockData";
 
 const STAGES = [
   "Booked",
@@ -38,19 +39,6 @@ const STAGES = [
   "Delivered",
 ];
 
-const AIRPORTS = [
-  { code: "DEL", city: "New Delhi" },
-  { code: "BOM", city: "Mumbai" },
-  { code: "BLR", city: "Bengaluru" },
-  { code: "MAA", city: "Chennai" },
-  { code: "HYD", city: "Hyderabad" },
-  { code: "CCU", city: "Kolkata" },
-  { code: "JFK", city: "New York" },
-  { code: "DXB", city: "Dubai" },
-  { code: "LHR", city: "London" },
-  { code: "SIN", city: "Singapore" }
-];
-
 const CARRIERS = [
   { name: "IndiGo Cargo", code: "6E" },
   { name: "Akasa Air", code: "QP" },
@@ -61,18 +49,18 @@ const CARRIERS = [
 ];
 
 const AWBStatusBadge = ({ status }: { status: string }) => {
-  const colors: Record<string, string> = {
-    Booked: "bg-blue-500/10 text-blue-400 border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.15)]",
-    InTransit: "bg-amber-500/10 text-amber-400 border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.15)]",
-    Delivered: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.15)]",
-    Failed: "bg-rose-500/10 text-rose-400 border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.15)]",
-    Processing: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.15)]"
-  };
-  const colorClass = colors[status] || colors.Booked;
+  const isDelivered = status === "Delivered";
+  const isFailed = status.includes("Exception") || status === "Failed";
+  const isTransit = status.includes("Transit") || status.includes("Manifested") || status.includes("Departed");
+
+  let colorClass = "bg-blue-500/10 text-blue-400 border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.15)]";
+  if (isTransit) colorClass = "bg-amber-500/10 text-amber-400 border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.15)]";
+  if (isDelivered) colorClass = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.15)]";
+  if (isFailed) colorClass = "bg-rose-500/10 text-rose-400 border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.15)]";
 
   return (
     <span className={`px-3 py-1.5 text-xs font-semibold rounded-md border ${colorClass} uppercase tracking-wider flex items-center gap-2`}>
-      <span className={`w-1.5 h-1.5 rounded-full ${status === 'InTransit' ? 'bg-amber-400 animate-pulse' : status === 'Delivered' ? 'bg-emerald-400' : 'bg-current'}`}></span>
+      <span className={`w-1.5 h-1.5 rounded-full ${isTransit ? 'bg-amber-400 animate-pulse' : isDelivered ? 'bg-emerald-400' : 'bg-current'}`}></span>
       {status}
     </span>
   );
@@ -85,31 +73,108 @@ export default function TrackingPage() {
   const rawAwb = params?.awb as string | undefined;
   const awb = rawAwb ? decodeURIComponent(rawAwb).toUpperCase() : 'UNKNOWN';
 
-  // Generate dynamic data based on AWB hash
+  // Generate dynamic data based on actual SHIPMENTS data if exists, else fallback to hash
   const { mockData, scanEvents } = useMemo(() => {
+    const realShipment = SHIPMENTS.find(s => s.awb === awb || s.lrNumber === awb);
     const hash = awb.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    
-    // Determine Status & Stage
+
+    if (realShipment) {
+      let currentStageIndex = STAGES.indexOf(realShipment.status);
+      if (currentStageIndex === -1) {
+        if (realShipment.status.includes('Manifested') || realShipment.status.includes('Departed') || realShipment.status.includes('Transit')) {
+          currentStageIndex = 5; // Manifested/Outbound
+        } else if (realShipment.status.includes('Exception')) {
+          currentStageIndex = 3;
+        } else if (realShipment.status === 'Warehouse') {
+          currentStageIndex = 3; // Inbound Received
+        } else {
+          currentStageIndex = 0;
+        }
+      }
+
+      let events = realShipment.events ? [...realShipment.events] : [];
+
+      if (events.length === 0) {
+        let eventTime = new Date(realShipment.bookedDate || new Date());
+        for (let i = 0; i <= currentStageIndex; i++) {
+          eventTime.setHours(eventTime.getHours() + (hash % 12) + 2);
+          let location = "System";
+          if (i > 2 && i < 6) location = `${realShipment.origin} Hub`;
+          if (i >= 6) location = `${realShipment.destination} Hub`;
+          if (i === 8) location = "Consignee Address";
+
+          events.unshift({
+            id: i,
+            timestamp: eventTime.toISOString(),
+            location,
+            status: STAGES[i],
+            staff: i < 2 ? "AUTO" : `EMP-${(hash * i) % 999}`
+          });
+        }
+      } else {
+         // Sort events by timestamp descending
+         events.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      }
+
+      const isFailed = realShipment.status.includes("Exception");
+
+      if (isFailed && !events.some(e => e.status.includes('Exception'))) {
+        events.unshift({
+          id: 99,
+          timestamp: new Date().toISOString(),
+          location: `${realShipment.origin} Hub`,
+          status: "Exception: Held by Customs",
+          staff: "SYSTEM"
+        });
+      }
+
+      const oCity = AIRPORTS.find(a => a.code === realShipment.origin)?.city || realShipment.origin;
+      const dCity = AIRPORTS.find(a => a.code === realShipment.destination)?.city || realShipment.destination;
+
+      const data = {
+        awb: realShipment.awb,
+        origin: realShipment.origin,
+        originCity: oCity,
+        destination: realShipment.destination,
+        destinationCity: dCity,
+        carrier: realShipment.carrier,
+        flightNo: realShipment.flight || 'TBA',
+        pieceCount: realShipment.pieces,
+        weight: parseFloat(realShipment.weight).toFixed(1),
+        volumetricWeight: `${(parseFloat(realShipment.weight) * 1.2).toFixed(1)} kg`,
+        estimatedDelivery: new Date(realShipment.eta || Date.now()).toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+        consignee: realShipment.consignee,
+        status: realShipment.status,
+        currentStageIndex,
+        serviceLevel: "Priority Express",
+        incoterm: "DDP",
+        isInsured: true,
+        customsStatus: currentStageIndex > 3 ? "Cleared" : "Pending",
+        co2Emissions: `${(hash % 500) + 120} kg CO₂e`,
+        isFailed
+      };
+
+      return { mockData: data, scanEvents: events };
+    }
+
+    // Hash fallback
     const isDelivered = hash % 5 === 0;
     const isFailed = hash % 20 === 0;
     let currentStageIndex = isDelivered ? 8 : (hash % 8);
-    if (isFailed) currentStageIndex = 3; // Stuck somewhere
+    if (isFailed) currentStageIndex = 3; 
 
-    let status = "InTransit";
+    let status = "In Transit";
     if (isDelivered) status = "Delivered";
     else if (isFailed) status = "Failed";
     else if (currentStageIndex < 2) status = "Booked";
     else if (currentStageIndex < 4) status = "Processing";
 
-    // Route
     const originIdx = hash % AIRPORTS.length;
-    const destIdx = (hash + 3) % AIRPORTS.length; // Ensure different destination
+    const destIdx = (hash + 3) % AIRPORTS.length;
     const origin = AIRPORTS[originIdx];
     const dest = AIRPORTS[destIdx];
-    
     const carrier = CARRIERS[hash % CARRIERS.length];
     
-    // Dates
     const now = new Date();
     const daysAgo = isDelivered ? (hash % 5) + 2 : (hash % 3);
     const bookedDate = new Date(now);
@@ -137,22 +202,19 @@ export default function TrackingPage() {
       incoterm: ["DDP", "DAP", "EXW", "FOB", "CIF"][hash % 5],
       isInsured: hash % 2 === 0,
       customsStatus: currentStageIndex > 3 ? "Cleared" : "Pending",
-      co2Emissions: `${(hash % 500) + 120} kg CO₂e`
+      co2Emissions: `${(hash % 500) + 120} kg CO₂e`,
+      isFailed
     };
 
-    // Generate Scan Events up to current stage
     const events = [];
     let eventTime = new Date(bookedDate);
-    
     for (let i = 0; i <= currentStageIndex; i++) {
       eventTime.setHours(eventTime.getHours() + (hash % 12) + 2);
-      
       let location = "System";
       if (i > 2 && i < 6) location = `${origin.code} Hub`;
       if (i >= 6) location = `${dest.code} Hub`;
       if (i === 8) location = "Consignee Address";
-
-      events.unshift({ // Add to beginning so newest is first
+      events.unshift({
         id: i,
         timestamp: eventTime.toISOString(),
         location,
@@ -179,9 +241,9 @@ export default function TrackingPage() {
 
   const getStatusColor = () => {
      if (isDelivered) return 'emerald';
-     if (mockData.status === 'Failed') return 'rose';
+     if (mockData.isFailed) return 'rose';
      if (mockData.status === 'Booked') return 'blue';
-     return 'indigo'; // InTransit/Processing
+     return 'indigo'; 
   };
   const statusColor = getStatusColor();
 
@@ -193,7 +255,7 @@ export default function TrackingPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Warning Banner for Failed Status */}
-        {mockData.status === 'Failed' && (
+        {mockData.isFailed && (
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex items-start shadow-lg shadow-rose-500/5">
             <AlertCircle className="w-5 h-5 text-rose-400 mr-3 mt-0.5 flex-shrink-0" />
             <div>
@@ -240,11 +302,11 @@ export default function TrackingPage() {
               transition={{ delay: 0.1 }}
               className="bg-[#0D1017]/80 backdrop-blur-xl border border-slate-800/80 rounded-3xl p-6 lg:p-8 relative overflow-hidden shadow-2xl"
             >
-              <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${isDelivered ? 'from-emerald-500 via-teal-400 to-emerald-500' : mockData.status === 'Failed' ? 'from-rose-500 to-red-500' : 'from-indigo-500 via-purple-500 to-indigo-500'}`}></div>
+              <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${isDelivered ? 'from-emerald-500 via-teal-400 to-emerald-500' : mockData.isFailed ? 'from-rose-500 to-red-500' : 'from-indigo-500 via-purple-500 to-indigo-500'}`}></div>
               
               <div className="flex items-center justify-between mb-10">
                  <h2 className="text-xl font-semibold text-white flex items-center gap-2.5">
-                   <Clock className={`w-5 h-5 ${isDelivered ? 'text-emerald-400' : mockData.status === 'Failed' ? 'text-rose-400' : 'text-indigo-400'}`} />
+                   <Clock className={`w-5 h-5 ${isDelivered ? 'text-emerald-400' : mockData.isFailed ? 'text-rose-400' : 'text-indigo-400'}`} />
                    Shipment Progress
                  </h2>
                  <div className="text-sm text-slate-400 bg-slate-800/50 px-3 py-1.5 rounded-lg border border-slate-700/50 flex items-center gap-2">
@@ -258,7 +320,7 @@ export default function TrackingPage() {
                 <div className="absolute left-[23px] top-4 bottom-4 w-0.5 bg-slate-800/80 rounded-full"></div>
                 {/* Progress Line */}
                 <div
-                  className={`absolute left-[23px] top-4 w-0.5 rounded-full transition-all duration-1000 ease-in-out ${isDelivered ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : mockData.status === 'Failed' ? 'bg-rose-500' : 'bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]'}`}
+                  className={`absolute left-[23px] top-4 w-0.5 rounded-full transition-all duration-1000 ease-in-out ${isDelivered ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : mockData.isFailed ? 'bg-rose-500' : 'bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]'}`}
                   style={{
                     height: `${(mockData.currentStageIndex / (STAGES.length - 1)) * 100}%`,
                   }}
@@ -276,13 +338,13 @@ export default function TrackingPage() {
                         <div className="relative z-10 bg-[#0D1017] rounded-full py-2">
                           {isCompleted && (
                             <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="bg-slate-800/50 rounded-full p-1 border border-slate-700/50">
-                              <CheckCircle2 className={`w-6 h-6 ${isDelivered || mockData.status === 'Failed' ? 'text-slate-400' : 'text-indigo-400'}`} />
+                              <CheckCircle2 className={`w-6 h-6 ${isDelivered || mockData.isFailed ? 'text-slate-400' : 'text-indigo-400'}`} />
                             </motion.div>
                           )}
                           {isCurrent && (
                             <div className="relative w-8 h-8 flex items-center justify-center ml-0.5">
-                              <span className={`absolute w-full h-full rounded-full opacity-25 animate-ping ${isDelivered ? 'bg-emerald-500' : mockData.status === 'Failed' ? 'bg-rose-500' : 'bg-indigo-500'}`}></span>
-                              <div className={`w-4 h-4 rounded-full border-[3px] border-[#0D1017] ${isDelivered ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]' : mockData.status === 'Failed' ? 'bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.8)]' : 'bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.8)]'}`}></div>
+                              <span className={`absolute w-full h-full rounded-full opacity-25 animate-ping ${isDelivered ? 'bg-emerald-500' : mockData.isFailed ? 'bg-rose-500' : 'bg-indigo-500'}`}></span>
+                              <div className={`w-4 h-4 rounded-full border-[3px] border-[#0D1017] ${isDelivered ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]' : mockData.isFailed ? 'bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.8)]' : 'bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.8)]'}`}></div>
                             </div>
                           )}
                           {isPending && (
@@ -294,13 +356,13 @@ export default function TrackingPage() {
 
                         {/* Text */}
                         <div className={`flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${isPending ? 'opacity-40' : ''}`}>
-                          <h3 className={`text-base font-medium ${isCurrent ? (isDelivered ? 'text-emerald-400' : mockData.status === 'Failed' ? 'text-rose-400' : 'text-indigo-400') : isCompleted ? 'text-slate-200' : 'text-slate-500'}`}>
+                          <h3 className={`text-base font-medium ${isCurrent ? (isDelivered ? 'text-emerald-400' : mockData.isFailed ? 'text-rose-400' : 'text-indigo-400') : isCompleted ? 'text-slate-200' : 'text-slate-500'}`}>
                             {stage}
                           </h3>
                           {(isCompleted || isCurrent) && (
                             <div className="text-sm font-mono text-slate-500 bg-slate-800/30 px-2 py-0.5 rounded border border-slate-700/30 w-fit">
-                              {scanEvents.find(e => e.status === stage)?.timestamp 
-                                ? new Date(scanEvents.find(e => e.status === stage)!.timestamp).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
+                              {scanEvents.find((e:any) => e.status.includes(stage))?.timestamp 
+                                ? new Date(scanEvents.find((e:any) => e.status.includes(stage))!.timestamp).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
                                 : '--'}
                             </div>
                           )}
@@ -329,7 +391,7 @@ export default function TrackingPage() {
 
               <div className="space-y-3">
                 <AnimatePresence>
-                  {visibleEvents.map((event, i) => {
+                  {visibleEvents.map((event: any, i: number) => {
                     const isException = event.status.includes('Exception');
                     return (
                       <motion.div

@@ -13,9 +13,17 @@ export const AIRPORTS = [
   { code: 'JFK', name: 'John F Kennedy', city: 'New York', state: 'USA' },
 ];
 
-export type ShipmentStatus = 'Booked' | 'Picked Up' | 'In Transit' | 'Customs Hold' | 'Out for Delivery' | 'Delivered' | 'Exception';
+export type ShipmentStatus = 'Booked' | 'Picked Up' | 'Warehouse' | 'Manifested' | 'Departed Origin' | 'In Transit' | 'Customs Hold' | 'Out for Delivery' | 'Delivered' | 'Exception' | string;
 export type InvoiceStatus = 'Draft' | 'Sent' | 'Paid' | 'Overdue' | 'Cancelled';
 export type UserRole = 'Admin' | 'Operations' | 'Finance' | 'Client';
+
+export interface ScanEvent {
+  id: string | number;
+  timestamp: string;
+  location: string;
+  status: string;
+  staff: string;
+}
 
 export interface Shipment {
   id: string;
@@ -35,6 +43,7 @@ export interface Shipment {
   eta: string;
   amount: number;
   flight?: string;
+  events?: ScanEvent[];
 }
 
 export interface Customer {
@@ -80,6 +89,16 @@ export interface AppUser {
   avatar: string;
 }
 
+export interface ULD {
+  id: string;
+  type: string;
+  no: string;
+  carrier: string;
+  pcs: number;
+  wt: number;
+  awbs: string[]; // List of AWB numbers
+}
+
 export interface Manifest {
   id: string;
   flightNo: string;
@@ -92,6 +111,7 @@ export interface Manifest {
   totalPieces: number;
   totalWeight: string;
   status: 'Open' | 'Closed' | 'Departed';
+  ulds?: ULD[];
 }
 
 // ─── MOCK SHIPMENTS ───
@@ -139,7 +159,7 @@ export const USERS: AppUser[] = [
 
 // ─── MOCK MANIFESTS ───
 export const MANIFESTS: Manifest[] = [
-  { id: 'm1', flightNo: '6E-1234', carrier: 'IndiGo', origin: 'DEL', destination: 'BOM', date: '2026-06-05', departure: '18:00', awbCount: 12, totalPieces: 145, totalWeight: '4200 kg', status: 'Open' },
+  { id: 'm1', flightNo: '6E-1234', carrier: 'IndiGo', origin: 'DEL', destination: 'BOM', date: '2026-06-05', departure: '18:00', awbCount: 0, totalPieces: 0, totalWeight: '0 kg', status: 'Open', ulds: [] },
   { id: 'm2', flightNo: 'AI-882', carrier: 'Air India', origin: 'HYD', destination: 'CCU', date: '2026-06-05', departure: '20:30', awbCount: 8, totalPieces: 67, totalWeight: '2100 kg', status: 'Open' },
   { id: 'm3', flightNo: 'QP-1100', carrier: 'Akasa Air', origin: 'MAA', destination: 'DEL', date: '2026-06-05', departure: '14:00', awbCount: 15, totalPieces: 210, totalWeight: '5800 kg', status: 'Closed' },
   { id: 'm4', flightNo: '6E-8821', carrier: 'IndiGo', origin: 'BOM', destination: 'BLR', date: '2026-06-04', departure: '09:30', awbCount: 6, totalPieces: 42, totalWeight: '1350 kg', status: 'Departed' },
@@ -179,6 +199,9 @@ export const getStatusColor = (status: string) => {
     'Customs Hold': 'bg-rose-500/10 text-rose-400 border-rose-500/20',
     'Booked': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
     'Picked Up': 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+    'Warehouse': 'bg-slate-500/10 text-slate-400 border-slate-500/20',
+    'Manifested': 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+    'Departed Origin': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
     'Out for Delivery': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
     'Exception': 'bg-red-500/10 text-red-400 border-red-500/20',
     'Active': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',

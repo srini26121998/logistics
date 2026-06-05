@@ -51,9 +51,11 @@ export default function ClientDirectoryPage() {
       gstin: newClient.gstin || "N/A",
       outstanding: 0,
       creditLimit: Number(newClient.creditLimit) || 100000,
-      status: "Active",
+      status: "Active" as const,
       joinedDate: new Date().toISOString().split("T")[0],
       kycVerified: false,
+      stateCode: "00",
+      totalShipments: 0,
     };
     setCustomers([client, ...customers]);
     setIsAddClientOpen(false);
@@ -63,7 +65,8 @@ export default function ClientDirectoryPage() {
 
   const handleEditClient = (e: React.FormEvent) => {
     e.preventDefault();
-    setCustomers(customers.map(c => c.id === selectedClient.id ? { ...c, ...newClient } : c));
+    if (!selectedClient) return;
+    setCustomers(customers.map(c => c.id === selectedClient.id ? { ...c, ...newClient, creditLimit: Number(newClient.creditLimit) || 0 } : c));
     setIsEditClientOpen(false);
     toast.success("Client updated successfully");
   };
