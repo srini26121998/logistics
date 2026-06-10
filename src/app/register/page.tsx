@@ -66,7 +66,7 @@ export default function RegisterPage() {
   return (
     <AuthLayout
       title="Create account"
-      subtitle="Join NexusLogistics and transform your supply chain."
+      subtitle="Join SVL Logistics and transform your supply chain."
     >
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
@@ -138,7 +138,7 @@ export default function RegisterPage() {
                 whileTap={{ scale: 0.99 }}
                 type="button"
                 onClick={handleNext}
-                className="w-full mt-4 py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-slate-900 rounded-xl font-medium shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all"
+                className="w-full mt-4 py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-medium shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all"
               >
                 Continue
                 <ChevronRight className="w-5 h-5" />
@@ -198,7 +198,7 @@ export default function RegisterPage() {
                     required
                     className="peer appearance-none w-5 h-5 border border-blue-200 rounded bg-white/80 checked:bg-blue-600 checked:border-blue-600 transition-colors cursor-pointer"
                   />
-                  <svg className="absolute w-3 h-3 text-slate-900 opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 5L4.5 8.5L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
@@ -214,7 +214,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={handleBack}
-                  className="p-3 bg-slate-100 hover:bg-slate-700 text-slate-700 rounded-xl transition-colors border border-blue-200"
+                  className="p-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors border border-blue-200"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
@@ -223,7 +223,7 @@ export default function RegisterPage() {
                   whileTap={{ scale: 0.99 }}
                   type="submit"
                   disabled={isLoading}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-slate-900 rounded-xl font-medium shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-medium shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
                 >
                   <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
                   {isLoading ? (

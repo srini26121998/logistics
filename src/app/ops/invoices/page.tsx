@@ -167,7 +167,7 @@ export default function InvoiceHistoryPage() {
                   <FileText className="w-5 h-5 text-emerald-600" /> Invoice {selectedInvoiceForPdf.invoiceNo}
                 </h2>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => { toast.success("Invoice downloaded"); setSelectedInvoiceForPdf(null); }} className="px-3 py-1.5 bg-slate-100 text-slate-900 rounded-lg text-xs font-medium hover:bg-slate-700 flex items-center gap-1.5 transition-colors">
+                  <button onClick={() => { toast.success("Invoice downloaded"); setSelectedInvoiceForPdf(null); }} className="px-3 py-1.5 bg-slate-100 text-slate-900 rounded-lg text-xs font-medium hover:bg-slate-200 flex items-center gap-1.5 transition-colors">
                     <Download className="w-3.5 h-3.5" /> Download PDF
                   </button>
                   <button

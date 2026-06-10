@@ -237,7 +237,7 @@ export default function PricingAdmin() {
                     <td className="px-6 py-4 text-center">
                       <button 
                         onClick={() => handleToggleActive(rate.id)}
-                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${rate.active ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20' : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-700'}`}
+                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${rate.active ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20' : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200'}`}
                       >
                         {rate.active ? 'Active' : 'Inactive'}
                       </button>
@@ -249,7 +249,7 @@ export default function PricingAdmin() {
                           <button onClick={handleSave} className="p-1.5 bg-indigo-500/20 text-indigo-400 rounded-lg hover:bg-indigo-500/30 transition-colors" title="Save">
                             <Save className="w-4 h-4" />
                           </button>
-                          <button onClick={() => handleCancel(rate)} className="p-1.5 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-700 transition-colors" title="Cancel">
+                          <button onClick={() => handleCancel(rate)} className="p-1.5 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors" title="Cancel">
                             <X className="w-4 h-4" />
                           </button>
                         </div>

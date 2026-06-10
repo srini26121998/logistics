@@ -149,8 +149,8 @@ export default function InboundOperations() {
               </p>
             )}
             <div className="mt-4 flex gap-2">
-               <button onClick={() => setScanInput(SHIPMENTS[0]?.lrNumber || "LR-892345")} className="text-xs bg-slate-100 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-700 transition-colors">Use {SHIPMENTS[0]?.lrNumber || "LR-892345"} (Gen)</button>
-               <button onClick={() => setScanInput(SHIPMENTS[1]?.lrNumber || "LR-100293")} className="text-xs bg-slate-100 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-700 transition-colors">Use {SHIPMENTS[1]?.lrNumber || "LR-100293"} (Pharma)</button>
+               <button onClick={() => setScanInput(SHIPMENTS[0]?.lrNumber || "LR-892345")} className="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-slate-700 transition-colors">Use {SHIPMENTS[0]?.lrNumber || "LR-892345"} (Gen)</button>
+               <button onClick={() => setScanInput(SHIPMENTS[1]?.lrNumber || "LR-100293")} className="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-slate-700 transition-colors">Use {SHIPMENTS[1]?.lrNumber || "LR-100293"} (Pharma)</button>
             </div>
           </motion.div>
 

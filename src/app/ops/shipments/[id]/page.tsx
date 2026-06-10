@@ -30,7 +30,7 @@ export default function OpsShipmentDetailPage({ params }: { params: { id: string
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => router.back()} className="p-2 bg-slate-100 hover:bg-slate-700 text-slate-700 rounded-lg transition-colors">
+        <button onClick={() => router.back()} className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>

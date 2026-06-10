@@ -59,7 +59,7 @@ export default function LoginPage() {
                 type="checkbox"
                 className="peer appearance-none w-5 h-5 border border-blue-200 rounded bg-white/80 checked:bg-blue-600 checked:border-blue-600 transition-colors cursor-pointer"
               />
-              <svg className="absolute w-3 h-3 text-slate-900 opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 5L4.5 8.5L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
@@ -76,7 +76,7 @@ export default function LoginPage() {
           whileTap={{ scale: 0.99 }}
           type="submit"
           disabled={isLoading}
-          className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-slate-900 rounded-xl font-medium shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
+          className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-medium shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
         >
           {/* Shimmer effect */}
           <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer" />
@@ -96,7 +96,7 @@ export default function LoginPage() {
             <div className="w-full border-t border-blue-200"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-slate-950 text-slate-500">Or continue with</span>
+            <span className="px-2 bg-white text-slate-500">Or continue with</span>
           </div>
         </div>
 

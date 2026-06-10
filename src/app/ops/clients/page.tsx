@@ -201,7 +201,7 @@ export default function ClientDirectoryPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right relative">
                       <button 
                         onClick={() => setActiveDropdown(activeDropdown === client.id ? null : client.id)}
-                        className="p-2 text-slate-600 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-700 focus:outline-none"
+                        className="p-2 text-slate-600 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-100 focus:outline-none"
                       >
                         <MoreVertical className="w-4 h-4" />
                       </button>
@@ -221,7 +221,7 @@ export default function ClientDirectoryPage() {
                             <button onClick={() => openEditModal(client)} className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:text-slate-900 hover:bg-slate-100/50 flex items-center gap-2 transition-colors">
                               <Edit className="w-4 h-4 text-emerald-400" /> Edit Client
                             </button>
-                            <div className="h-px bg-slate-700/50 my-1"></div>
+                            <div className="h-px bg-slate-200 my-1"></div>
                             <button onClick={() => handleDeleteClient(client.id)} className="w-full text-left px-4 py-2.5 text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 flex items-center gap-2 transition-colors">
                               <Trash2 className="w-4 h-4" /> Delete Client
                             </button>
