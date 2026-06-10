@@ -94,7 +94,8 @@ export function NotificationBell() {
     <div className="relative" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        className="relative p-2 text-slate-400 hover:text-white transition-colors rounded-full hover:bg-slate-800/50"
+        className="relative p-2 text-slate-600 hover:text-slate-900 transition-colors rounded-full hover:bg-slate-100/50"
+        suppressHydrationWarning
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -111,11 +112,11 @@ export function NotificationBell() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#131824] border border-slate-700 rounded-xl shadow-2xl overflow-hidden z-50 flex flex-col"
+            className="absolute right-0 mt-2 w-80 sm:w-96 bg-white border border-blue-200 rounded-xl shadow-2xl overflow-hidden z-50 flex flex-col"
           >
-            <div className="p-4 border-b border-slate-700/60 flex items-center justify-between bg-[#0E121B]">
+            <div className="p-4 border-b border-blue-200/60 flex items-center justify-between bg-white">
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-slate-200">Notifications</h3>
+                <h3 className="font-semibold text-slate-900">Notifications</h3>
                 {unreadCount > 0 && (
                   <span className="bg-indigo-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                     {unreadCount}
@@ -145,7 +146,7 @@ export function NotificationBell() {
                     <div 
                       key={notif.id}
                       onClick={() => markAsRead(notif.id)}
-                      className={`p-4 transition-colors cursor-pointer group hover:bg-slate-800/30 ${notif.read ? 'opacity-60' : 'bg-slate-800/10'}`}
+                      className={`p-4 transition-colors cursor-pointer group hover:bg-slate-100/30 ${notif.read ? 'opacity-60' : 'bg-slate-50'}`}
                     >
                       <div className="flex gap-3">
                         <div className={`mt-0.5 w-8 h-8 rounded-full border flex items-center justify-center shrink-0 ${getTypeStyles(notif.type)}`}>
@@ -153,17 +154,17 @@ export function NotificationBell() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">
-                            <p className={`text-sm font-medium truncate ${notif.read ? 'text-slate-400' : 'text-slate-200'}`}>
+                            <p className={`text-sm font-medium truncate ${notif.read ? 'text-slate-600' : 'text-slate-900'}`}>
                               {notif.title}
                             </p>
                             <button 
                               onClick={(e) => removeNotification(notif.id, e)}
-                              className="text-slate-500 hover:text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity"
+                              className="text-slate-500 hover:text-slate-700 opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                               <X className="w-3.5 h-3.5" />
                             </button>
                           </div>
-                          <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                          <p className="text-xs text-slate-600 mt-1 line-clamp-2">
                             {notif.description}
                           </p>
                           <p className="text-[10px] text-slate-500 mt-2 font-medium uppercase tracking-wider">
@@ -177,8 +178,8 @@ export function NotificationBell() {
               )}
             </div>
 
-            <div className="p-3 border-t border-slate-700/60 bg-[#0E121B] text-center">
-              <button className="text-xs font-medium text-slate-400 hover:text-white transition-colors">
+            <div className="p-3 border-t border-blue-200/60 bg-white text-center">
+              <button className="text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors">
                 View All Activity
               </button>
             </div>

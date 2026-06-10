@@ -6,7 +6,7 @@ export default function AboutPage() {
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-slate-900 text-white">
+      <section className="relative pt-32 pb-20 overflow-hidden bg-white text-slate-900">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/90 to-slate-900/90 mix-blend-multiply" />
           <img 
@@ -19,7 +19,7 @@ export default function AboutPage() {
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
             Redefining Global <span className="text-indigo-400">Logistics</span>
           </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+          <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-10 leading-relaxed">
             SVL Logistics is on a mission to bring transparency, speed, and reliability to the world's supply chains through cutting-edge technology and unparalleled service.
           </p>
         </div>
@@ -28,7 +28,7 @@ export default function AboutPage() {
       {/* Stats */}
       <section className="py-12 bg-indigo-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white divide-x divide-indigo-500/50">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-slate-900 divide-x divide-indigo-500/50">
             <div>
               <div className="text-4xl font-bold mb-2">15+</div>
               <div className="text-indigo-200 text-sm font-medium uppercase tracking-wider">Years Experience</div>
@@ -84,7 +84,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-slate-50 border-t border-slate-200 py-20">
+      <section className="bg-slate-50 border-t border-blue-200 py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-slate-900 mb-6">Ready to upgrade your logistics?</h2>
           <p className="text-lg text-slate-600 mb-8">Join thousands of companies who trust SVL Logistics to power their global supply chains.</p>
@@ -92,7 +92,7 @@ export default function AboutPage() {
             <Link href="/register" className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-colors shadow-lg shadow-indigo-200 flex items-center">
               Open an Account <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
-            <Link href="/contact" className="px-8 py-3 bg-white border-2 border-slate-200 hover:border-slate-300 text-slate-700 font-bold rounded-lg transition-colors">
+            <Link href="/contact" className="px-8 py-3 bg-white border-2 border-blue-200 hover:border-blue-200 text-slate-700 font-bold rounded-lg transition-colors">
               Contact Sales
             </Link>
           </div>

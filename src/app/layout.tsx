@@ -22,12 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${inter.variable} font-sans antialiased flex flex-col min-h-screen bg-[#0A0A0B] text-slate-200`}>
+      <body className={`${inter.className} ${inter.variable} font-sans antialiased flex flex-col min-h-screen bg-slate-50 text-slate-900`}>
         <Navbar />
         <main className="flex-grow flex flex-col">
           {children}
         </main>
-        <Toaster position="top-center" theme="dark" richColors />
+        <Toaster position="top-center" theme="light" richColors />
         <BackButton />
         <Footer />
       </body>

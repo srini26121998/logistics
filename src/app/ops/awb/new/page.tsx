@@ -185,13 +185,13 @@ function AWBFormContent() {
   const isLocked = awbStatus === 'Confirmed';
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-slate-200 py-8 px-4 sm:px-6 lg:px-8 font-sans pb-32">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-50 text-slate-900 py-8 font-sans pb-32">
+      <div className="w-full space-y-6">
         
         {/* Top Header & Actions */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-800 gap-4 sticky top-4 z-50">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white backdrop-blur-md p-6 rounded-2xl border border-blue-200 gap-4 sticky top-4 z-50">
           <div>
-            <h1 className="text-2xl font-extrabold text-white flex items-center">
+            <h1 className="text-2xl font-extrabold text-slate-900 flex items-center">
               <FileText className="w-6 h-6 mr-2 text-indigo-400" />
               Air Waybill Creation
             </h1>
@@ -207,7 +207,7 @@ function AWBFormContent() {
             </div>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button disabled={isLocked} className="px-4 py-2 bg-[#121622] border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 font-medium flex items-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            <button disabled={isLocked} className="px-4 py-2 bg-white border border-blue-200 text-slate-700 rounded-lg hover:bg-slate-100 font-medium flex items-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
               <Save className="w-4 h-4 mr-2" /> Save Draft
             </button>
             {!isLocked ? (
@@ -216,10 +216,10 @@ function AWBFormContent() {
               </button>
             ) : (
               <>
-                <button onClick={() => window.print()} className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900 font-medium flex items-center transition-colors">
+                <button onClick={() => window.print()} className="px-4 py-2 bg-slate-100 text-slate-900 rounded-lg hover:bg-white font-medium flex items-center transition-colors">
                   <Printer className="w-4 h-4 mr-2" /> Print PDF
                 </button>
-                <button onClick={() => alert('Email sent to shipper successfully.')} className="px-4 py-2 bg-[#121622] border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 font-medium flex items-center transition-colors">
+                <button onClick={() => alert('Email sent to shipper successfully.')} className="px-4 py-2 bg-white border border-blue-200 text-slate-700 rounded-lg hover:bg-slate-100 font-medium flex items-center transition-colors">
                   <Send className="w-4 h-4 mr-2" /> Email
                 </button>
                 <button onClick={() => router.push('/ops/outbound')} className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.3)] font-medium flex items-center transition-colors">
@@ -245,55 +245,55 @@ function AWBFormContent() {
           <div className="lg:col-span-8 space-y-6">
             
             {/* 3.3.1 Header Section */}
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-slate-900/50 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden">
-              <div className="bg-[#121622]/80 px-6 py-4 border-b border-slate-800 flex items-center">
-                <Building className="w-5 h-5 mr-2 text-slate-400" />
-                <h2 className="text-lg font-bold text-white">Header Information</h2>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white/80 backdrop-blur-md rounded-2xl border border-blue-200 overflow-hidden">
+              <div className="bg-white/80 px-6 py-4 border-b border-blue-200 flex items-center">
+                <Building className="w-5 h-5 mr-2 text-slate-600" />
+                <h2 className="text-lg font-bold text-slate-900">Header Information</h2>
               </div>
               <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-1.5">Issuing Carrier</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Issuing Carrier</label>
                   <select 
                     disabled={isLocked}
                     value={issuingCarrier} onChange={e => setIssuingCarrier(e.target.value)}
-                    className="w-full bg-[#121622] border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50"
+                    className="w-full bg-white border border-blue-200 rounded-xl px-4 py-2.5 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50"
                   >
                     {CARRIERS.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-1.5">Agent Name</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Agent Name</label>
                   <input 
                     type="text" disabled={isLocked} value={agentName} onChange={e => setAgentName(e.target.value)}
-                    className="w-full bg-[#121622] border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50"
+                    className="w-full bg-white border border-blue-200 rounded-xl px-4 py-2.5 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-1.5">Agent IATA Code</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Agent IATA Code</label>
                   <input 
                     type="text" disabled={isLocked} value={agentIata} onChange={e => setAgentIata(e.target.value)}
-                    className="w-full bg-[#121622] border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50"
+                    className="w-full bg-white border border-blue-200 rounded-xl px-4 py-2.5 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-1.5">Agent Account No.</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Agent Account No.</label>
                   <input 
                     type="text" disabled={isLocked} value={agentAccount} onChange={e => setAgentAccount(e.target.value)}
-                    className="w-full bg-[#121622] border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50"
+                    className="w-full bg-white border border-blue-200 rounded-xl px-4 py-2.5 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50"
                   />
                 </div>
               </div>
             </motion.div>
 
             {/* 3.3.2 Shipper & Consignee */}
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-slate-900/50 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden">
-              <div className="bg-[#121622]/80 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white/80 backdrop-blur-md rounded-2xl border border-blue-200 overflow-hidden">
+              <div className="bg-white/80 px-6 py-4 border-b border-blue-200 flex justify-between items-center">
                 <div className="flex items-center">
-                  <User className="w-5 h-5 mr-2 text-slate-400" />
-                  <h2 className="text-lg font-bold text-white">Shipper & Consignee</h2>
+                  <User className="w-5 h-5 mr-2 text-slate-600" />
+                  <h2 className="text-lg font-bold text-slate-900">Shipper & Consignee</h2>
                 </div>
               </div>
-              <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-slate-800/50">
+              <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-blue-200/50">
                 {/* Shipper */}
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -301,19 +301,19 @@ function AWBFormContent() {
                     {!isLocked && <button onClick={autoFillShipper} className="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded hover:bg-indigo-500/20">Auto-fill</button>}
                   </div>
                   <div className="space-y-3">
-                    <input type="text" placeholder="Name" disabled={isLocked} value={shipper.name} onChange={e => setShipper({...shipper, name: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                    <input type="text" placeholder="Address" disabled={isLocked} value={shipper.address} onChange={e => setShipper({...shipper, address: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <input type="text" placeholder="Name" disabled={isLocked} value={shipper.name} onChange={e => setShipper({...shipper, name: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                    <input type="text" placeholder="Address" disabled={isLocked} value={shipper.address} onChange={e => setShipper({...shipper, address: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="text" placeholder="City" disabled={isLocked} value={shipper.city} onChange={e => setShipper({...shipper, city: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                      <input type="text" placeholder="State" disabled={isLocked} value={shipper.state} onChange={e => setShipper({...shipper, state: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                      <input type="text" placeholder="City" disabled={isLocked} value={shipper.city} onChange={e => setShipper({...shipper, city: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                      <input type="text" placeholder="State" disabled={isLocked} value={shipper.state} onChange={e => setShipper({...shipper, state: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="text" placeholder="PIN" disabled={isLocked} value={shipper.pin} onChange={e => setShipper({...shipper, pin: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                      <input type="text" placeholder="Country" disabled={isLocked} value={shipper.country} onChange={e => setShipper({...shipper, country: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                      <input type="text" placeholder="PIN" disabled={isLocked} value={shipper.pin} onChange={e => setShipper({...shipper, pin: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                      <input type="text" placeholder="Country" disabled={isLocked} value={shipper.country} onChange={e => setShipper({...shipper, country: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="text" placeholder="Phone" disabled={isLocked} value={shipper.phone} onChange={e => setShipper({...shipper, phone: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                      <input type="text" placeholder="Account No (Opt)" disabled={isLocked} value={shipper.accountNo} onChange={e => setShipper({...shipper, accountNo: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                      <input type="text" placeholder="Phone" disabled={isLocked} value={shipper.phone} onChange={e => setShipper({...shipper, phone: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                      <input type="text" placeholder="Account No (Opt)" disabled={isLocked} value={shipper.accountNo} onChange={e => setShipper({...shipper, accountNo: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                     </div>
                   </div>
                 </div>
@@ -325,19 +325,19 @@ function AWBFormContent() {
                     {!isLocked && <button onClick={autoFillConsignee} className="text-xs font-bold text-teal-400 bg-teal-500/10 px-2 py-1 rounded hover:bg-teal-500/20">Auto-fill</button>}
                   </div>
                   <div className="space-y-3">
-                    <input type="text" placeholder="Name" disabled={isLocked} value={consignee.name} onChange={e => setConsignee({...consignee, name: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                    <input type="text" placeholder="Address" disabled={isLocked} value={consignee.address} onChange={e => setConsignee({...consignee, address: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <input type="text" placeholder="Name" disabled={isLocked} value={consignee.name} onChange={e => setConsignee({...consignee, name: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                    <input type="text" placeholder="Address" disabled={isLocked} value={consignee.address} onChange={e => setConsignee({...consignee, address: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="text" placeholder="City" disabled={isLocked} value={consignee.city} onChange={e => setConsignee({...consignee, city: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                      <input type="text" placeholder="State" disabled={isLocked} value={consignee.state} onChange={e => setConsignee({...consignee, state: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                      <input type="text" placeholder="City" disabled={isLocked} value={consignee.city} onChange={e => setConsignee({...consignee, city: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                      <input type="text" placeholder="State" disabled={isLocked} value={consignee.state} onChange={e => setConsignee({...consignee, state: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="text" placeholder="PIN" disabled={isLocked} value={consignee.pin} onChange={e => setConsignee({...consignee, pin: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                      <input type="text" placeholder="Country" disabled={isLocked} value={consignee.country} onChange={e => setConsignee({...consignee, country: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                      <input type="text" placeholder="PIN" disabled={isLocked} value={consignee.pin} onChange={e => setConsignee({...consignee, pin: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                      <input type="text" placeholder="Country" disabled={isLocked} value={consignee.country} onChange={e => setConsignee({...consignee, country: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <input type="text" placeholder="Phone" disabled={isLocked} value={consignee.phone} onChange={e => setConsignee({...consignee, phone: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                      <input type="text" placeholder="Account No (Opt)" disabled={isLocked} value={consignee.accountNo} onChange={e => setConsignee({...consignee, accountNo: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                      <input type="text" placeholder="Phone" disabled={isLocked} value={consignee.phone} onChange={e => setConsignee({...consignee, phone: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                      <input type="text" placeholder="Account No (Opt)" disabled={isLocked} value={consignee.accountNo} onChange={e => setConsignee({...consignee, accountNo: e.target.value})} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                     </div>
                   </div>
                 </div>
@@ -345,83 +345,83 @@ function AWBFormContent() {
             </motion.div>
 
             {/* 3.3.4 Cargo Details */}
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-slate-900/50 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden">
-              <div className="bg-[#121622]/80 px-6 py-4 border-b border-slate-800 flex items-center">
-                <Package className="w-5 h-5 mr-2 text-slate-400" />
-                <h2 className="text-lg font-bold text-white">Cargo Details</h2>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white/80 backdrop-blur-md rounded-2xl border border-blue-200 overflow-hidden">
+              <div className="bg-white/80 px-6 py-4 border-b border-blue-200 flex items-center">
+                <Package className="w-5 h-5 mr-2 text-slate-600" />
+                <h2 className="text-lg font-bold text-slate-900">Cargo Details</h2>
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Pieces (RCP)</label>
-                    <input type="number" disabled={isLocked} value={pieces} onChange={e => setPieces(Number(e.target.value))} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Pieces (RCP)</label>
+                    <input type="number" disabled={isLocked} value={pieces} onChange={e => setPieces(Number(e.target.value))} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Gross Wt. (kg)</label>
-                    <input type="number" disabled={isLocked} value={grossWeight} onChange={e => setGrossWeight(Number(e.target.value))} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Gross Wt. (kg)</label>
+                    <input type="number" disabled={isLocked} value={grossWeight} onChange={e => setGrossWeight(Number(e.target.value))} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Chargeable Wt. (kg)</label>
-                    <input type="number" disabled={isLocked} value={chargeableWeight} onChange={e => setChargeableWeight(Number(e.target.value))} className="w-full bg-indigo-500/10 border border-indigo-500/30 rounded-lg px-3 py-2 text-indigo-300 font-bold focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Chargeable Wt. (kg)</label>
+                    <input type="number" disabled={isLocked} value={chargeableWeight} onChange={e => setChargeableWeight(Number(e.target.value))} className="w-full bg-indigo-500/10 border border-indigo-500/30 rounded-lg px-3 py-2 text-indigo-300 font-bold focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Rate Class</label>
-                    <select disabled={isLocked} value={rateClass} onChange={e => setRateClass(e.target.value)} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50">
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Rate Class</label>
+                    <select disabled={isLocked} value={rateClass} onChange={e => setRateClass(e.target.value)} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50">
                       {RATE_CLASSES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                     </select>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 border-t border-slate-800/50 pt-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 border-t border-blue-200/50 pt-6">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Commodity Item No.</label>
-                    <input type="text" disabled={isLocked} value={commodityItemNo} onChange={e => setCommodityItemNo(e.target.value)} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Commodity Item No.</label>
+                    <input type="text" disabled={isLocked} value={commodityItemNo} onChange={e => setCommodityItemNo(e.target.value)} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Nature of Goods</label>
-                    <input type="text" disabled={isLocked} value={natureOfGoods} onChange={e => setNatureOfGoods(e.target.value)} placeholder="e.g. MACHINERY PARTS" className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Nature of Goods</label>
+                    <input type="text" disabled={isLocked} value={natureOfGoods} onChange={e => setNatureOfGoods(e.target.value)} placeholder="e.g. MACHINERY PARTS" className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">SHC</label>
-                    <input type="text" disabled={isLocked} value={shc} onChange={e => setShc(e.target.value.toUpperCase())} maxLength={3} placeholder="GEN" className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50 font-mono uppercase" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">SHC</label>
+                    <input type="text" disabled={isLocked} value={shc} onChange={e => setShc(e.target.value.toUpperCase())} maxLength={3} placeholder="GEN" className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50 font-mono uppercase" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Rate/Charge</label>
-                    <input type="number" disabled={isLocked} value={rateCharge} onChange={e => setRateCharge(Number(e.target.value))} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Rate/Charge</label>
+                    <input type="number" disabled={isLocked} value={rateCharge} onChange={e => setRateCharge(Number(e.target.value))} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                   </div>
                 </div>
                 
-                <div className="flex justify-between items-center bg-[#121622] p-4 rounded-xl border border-slate-800">
+                <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-blue-200">
                   <div className="flex gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-400 mb-1">Value for Carriage</label>
-                      <select disabled={isLocked} value={declaredValueCarriage} onChange={e => setDeclaredValueCarriage(e.target.value)} className="w-32 bg-[#121622] border border-slate-700 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50">
+                      <label className="block text-xs font-semibold text-slate-600 mb-1">Value for Carriage</label>
+                      <select disabled={isLocked} value={declaredValueCarriage} onChange={e => setDeclaredValueCarriage(e.target.value)} className="w-32 bg-white border border-blue-200 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50">
                         <option value="NVD">NVD</option>
                         <option value="VAL">Declared Value</option>
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-400 mb-1">Value for Customs</label>
-                      <select disabled={isLocked} value={declaredValueCustoms} onChange={e => setDeclaredValueCustoms(e.target.value)} className="w-32 bg-[#121622] border border-slate-700 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50">
+                      <label className="block text-xs font-semibold text-slate-600 mb-1">Value for Customs</label>
+                      <select disabled={isLocked} value={declaredValueCustoms} onChange={e => setDeclaredValueCustoms(e.target.value)} className="w-32 bg-white border border-blue-200 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50">
                         <option value="NCV">NCV</option>
                         <option value="VAL">Declared Value</option>
                       </select>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs font-bold text-slate-400 uppercase">Total Weight Charge</div>
-                    <div className="text-2xl font-extrabold text-white">₹{totalCharge.toFixed(2)}</div>
+                    <div className="text-xs font-bold text-slate-600 uppercase">Total Weight Charge</div>
+                    <div className="text-2xl font-extrabold text-slate-900">₹{totalCharge.toFixed(2)}</div>
                   </div>
                 </div>
               </div>
             </motion.div>
 
             {/* 3.3.5 Charges Matrix */}
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-slate-900/50 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden">
-              <div className="bg-[#121622]/80 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white/80 backdrop-blur-md rounded-2xl border border-blue-200 overflow-hidden">
+              <div className="bg-white/80 px-6 py-4 border-b border-blue-200 flex justify-between items-center">
                 <div className="flex items-center">
-                  <Hash className="w-5 h-5 mr-2 text-slate-400" />
-                  <h2 className="text-lg font-bold text-white">Ancillary Charges</h2>
+                  <Hash className="w-5 h-5 mr-2 text-slate-600" />
+                  <h2 className="text-lg font-bold text-slate-900">Ancillary Charges</h2>
                 </div>
                 {!isLocked && (
                   <button onClick={addCharge} className="text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1.5 rounded-lg hover:bg-indigo-500/20 flex items-center">
@@ -432,21 +432,21 @@ function AWBFormContent() {
               <div className="p-6">
                 <div className="space-y-3 mb-6">
                   {charges.map((charge, idx) => (
-                    <div key={charge.id} className="flex flex-wrap md:flex-nowrap items-center gap-3 bg-[#121622] p-3 rounded-xl border border-slate-800">
-                      <select disabled={isLocked} value={charge.code} onChange={e => updateCharge(charge.id, 'code', e.target.value)} className="w-full md:w-32 bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 font-mono disabled:opacity-60 disabled:bg-slate-800/50">
+                    <div key={charge.id} className="flex flex-wrap md:flex-nowrap items-center gap-3 bg-white p-3 rounded-xl border border-blue-200">
+                      <select disabled={isLocked} value={charge.code} onChange={e => updateCharge(charge.id, 'code', e.target.value)} className="w-full md:w-32 bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 font-mono disabled:opacity-60 disabled:bg-slate-100/50">
                         <option value="">Code</option>
                         {ANCILLARY_CODES.map(ac => <option key={ac.code} value={ac.code}>{ac.code}</option>)}
                       </select>
-                      <input type="text" disabled={isLocked} value={charge.desc} onChange={e => updateCharge(charge.id, 'desc', e.target.value)} placeholder="Description" className="w-full md:flex-1 bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                      <select disabled={isLocked} value={charge.type} onChange={e => updateCharge(charge.id, 'type', e.target.value)} className="w-full md:w-32 bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50">
+                      <input type="text" disabled={isLocked} value={charge.desc} onChange={e => updateCharge(charge.id, 'desc', e.target.value)} placeholder="Description" className="w-full md:flex-1 bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                      <select disabled={isLocked} value={charge.type} onChange={e => updateCharge(charge.id, 'type', e.target.value)} className="w-full md:w-32 bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50">
                         <option value="Agent">Due Agent</option>
                         <option value="Carrier">Due Carrier</option>
                       </select>
-                      <select disabled={isLocked} value={charge.payment} onChange={e => updateCharge(charge.id, 'payment', e.target.value)} className="w-full md:w-32 bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50">
+                      <select disabled={isLocked} value={charge.payment} onChange={e => updateCharge(charge.id, 'payment', e.target.value)} className="w-full md:w-32 bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50">
                         <option value="Prepaid">Prepaid</option>
                         <option value="Collect">Collect</option>
                       </select>
-                      <input type="number" disabled={isLocked} value={charge.amount} onChange={e => updateCharge(charge.id, 'amount', Number(e.target.value))} placeholder="Amount" className="w-full md:w-32 bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 font-bold disabled:opacity-60 disabled:bg-slate-800/50 text-right" />
+                      <input type="number" disabled={isLocked} value={charge.amount} onChange={e => updateCharge(charge.id, 'amount', Number(e.target.value))} placeholder="Amount" className="w-full md:w-32 bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 font-bold disabled:opacity-60 disabled:bg-slate-100/50 text-right" />
                       {!isLocked && (
                         <button onClick={() => removeCharge(charge.id)} className="p-2 text-red-500 hover:bg-red-500/20 rounded-lg transition-colors">
                           <Trash2 className="w-4 h-4" />
@@ -455,24 +455,24 @@ function AWBFormContent() {
                     </div>
                   ))}
                   {charges.length === 0 && (
-                    <div className="text-center py-6 text-slate-400 text-sm italic">No ancillary charges added.</div>
+                    <div className="text-center py-6 text-slate-600 text-sm italic">No ancillary charges added.</div>
                   )}
                 </div>
 
-                <div className="bg-slate-800 text-white rounded-xl p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-slate-100 text-slate-900 rounded-xl p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <div className="text-slate-400 text-xs font-bold uppercase mb-1">Due Agent</div>
+                    <div className="text-slate-600 text-xs font-bold uppercase mb-1">Due Agent</div>
                     <div className="text-xl font-bold">₹{totalAgent.toFixed(2)}</div>
                   </div>
                   <div>
-                    <div className="text-slate-400 text-xs font-bold uppercase mb-1">Due Carrier</div>
+                    <div className="text-slate-600 text-xs font-bold uppercase mb-1">Due Carrier</div>
                     <div className="text-xl font-bold">₹{totalCarrier.toFixed(2)}</div>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l border-slate-700 pt-4 md:pt-0 md:pl-4">
+                  <div className="border-t md:border-t-0 md:border-l border-blue-200 pt-4 md:pt-0 md:pl-4">
                     <div className="text-emerald-400 text-xs font-bold uppercase mb-1">Total Prepaid</div>
                     <div className="text-xl font-bold">₹{totalPrepaid.toFixed(2)}</div>
                   </div>
-                  <div className="border-t md:border-t-0 md:border-l border-slate-700 pt-4 md:pt-0 md:pl-4">
+                  <div className="border-t md:border-t-0 md:border-l border-blue-200 pt-4 md:pt-0 md:pl-4">
                     <div className="text-amber-400 text-xs font-bold uppercase mb-1">Total Collect</div>
                     <div className="text-xl font-bold">₹{totalCollect.toFixed(2)}</div>
                   </div>
@@ -484,52 +484,52 @@ function AWBFormContent() {
 
           {/* Right Column: 3.3.3 Routing */}
           <div className="lg:col-span-4 space-y-6">
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-slate-900/50 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden sticky top-28">
-              <div className="bg-[#121622]/80 px-6 py-4 border-b border-slate-800 flex items-center">
-                <MapPin className="w-5 h-5 mr-2 text-slate-400" />
-                <h2 className="text-lg font-bold text-white">Routing</h2>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white/80 backdrop-blur-md rounded-2xl border border-blue-200 overflow-hidden sticky top-28">
+              <div className="bg-white/80 px-6 py-4 border-b border-blue-200 flex items-center">
+                <MapPin className="w-5 h-5 mr-2 text-slate-600" />
+                <h2 className="text-lg font-bold text-slate-900">Routing</h2>
               </div>
               <div className="p-6 space-y-5">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-1.5 flex items-center">
-                    <PlaneTakeoff className="w-4 h-4 mr-1 text-slate-400" /> Airport of Departure
+                  <label className="block text-sm font-semibold text-slate-700 mb-1.5 flex items-center">
+                    <PlaneTakeoff className="w-4 h-4 mr-1 text-slate-600" /> Airport of Departure
                   </label>
-                  <input type="text" disabled={isLocked} value={departure} onChange={e => setDeparture(e.target.value)} placeholder="e.g. MAA-CHENNAI" className="w-full bg-[#121622] border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                  <input type="text" disabled={isLocked} value={departure} onChange={e => setDeparture(e.target.value)} placeholder="e.g. MAA-CHENNAI" className="w-full bg-white border border-blue-200 rounded-xl px-4 py-2.5 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                 </div>
                 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <label className="block text-sm font-semibold text-slate-300">Routing Legs</label>
+                    <label className="block text-sm font-semibold text-slate-700">Routing Legs</label>
                   </div>
                   {routingLegs.map((leg, index) => (
                     <div key={leg.id} className="flex gap-2 items-center">
-                      <input type="text" disabled={isLocked} value={leg.to} onChange={e => setRoutingLegs(routingLegs.map(l => l.id === leg.id ? {...l, to: e.target.value} : l))} placeholder="To" className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
-                      <input type="text" disabled={isLocked} value={leg.by} onChange={e => setRoutingLegs(routingLegs.map(l => l.id === leg.id ? {...l, by: e.target.value} : l))} placeholder="By" className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                      <input type="text" disabled={isLocked} value={leg.to} onChange={e => setRoutingLegs(routingLegs.map(l => l.id === leg.id ? {...l, to: e.target.value} : l))} placeholder="To" className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
+                      <input type="text" disabled={isLocked} value={leg.by} onChange={e => setRoutingLegs(routingLegs.map(l => l.id === leg.id ? {...l, by: e.target.value} : l))} placeholder="By" className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                       {index === routingLegs.length - 1 && !isLocked && (
                          <button onClick={addRoutingLeg} className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg hover:bg-indigo-500/20 flex-shrink-0"><Plus className="w-4 h-4" /></button>
                       )}
                       {routingLegs.length > 1 && !isLocked && (
-                         <button onClick={() => removeRoutingLeg(leg.id)} className="p-2 text-slate-400 hover:bg-slate-800 rounded-lg flex-shrink-0"><Trash2 className="w-4 h-4" /></button>
+                         <button onClick={() => removeRoutingLeg(leg.id)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg flex-shrink-0"><Trash2 className="w-4 h-4" /></button>
                       )}
                     </div>
                   ))}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-1.5 flex items-center">
-                    <PlaneLanding className="w-4 h-4 mr-1 text-slate-400" /> Airport of Destination
+                  <label className="block text-sm font-semibold text-slate-700 mb-1.5 flex items-center">
+                    <PlaneLanding className="w-4 h-4 mr-1 text-slate-600" /> Airport of Destination
                   </label>
-                  <input type="text" disabled={isLocked} value={destination} onChange={e => setDestination(e.target.value)} placeholder="e.g. BDQ-VADODARA" className="w-full bg-[#121622] border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                  <input type="text" disabled={isLocked} value={destination} onChange={e => setDestination(e.target.value)} placeholder="e.g. BDQ-VADODARA" className="w-full bg-white border border-blue-200 rounded-xl px-4 py-2.5 text-slate-900 focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800/50">
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-blue-200/50">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Flight No.</label>
-                    <input type="text" disabled={isLocked} value={flightNumber} onChange={e => setFlightNumber(e.target.value)} placeholder="e.g. 6E-1234" className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Flight No.</label>
+                    <input type="text" disabled={isLocked} value={flightNumber} onChange={e => setFlightNumber(e.target.value)} placeholder="e.g. 6E-1234" className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Date</label>
-                    <input type="date" disabled={isLocked} value={flightDate} onChange={e => setFlightDate(e.target.value)} className="w-full bg-[#121622] border border-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-800/50" />
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">Date</label>
+                    <input type="date" disabled={isLocked} value={flightDate} onChange={e => setFlightDate(e.target.value)} className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-60 disabled:bg-slate-100/50" />
                   </div>
                 </div>
               </div>

@@ -68,24 +68,24 @@ export default function OperationsAPIDocs() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F1117] text-slate-300 font-sans flex flex-col selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-slate-50 text-slate-700 font-sans flex flex-col selection:bg-indigo-500/30">
       {/* Header */}
-      <header className="border-b border-slate-800 bg-[#0F1117]/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-blue-200 bg-slate-50/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <Terminal className="w-5 h-5 text-white" />
+              <Terminal className="w-5 h-5 text-slate-900" />
             </div>
-            <h1 className="text-xl font-bold text-white tracking-tight">Operations API</h1>
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">Operations API</h1>
             <span className="px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 ml-2">
               v1.0 Live
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <button className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-2">
               <Book className="w-4 h-4" /> Documentation
             </button>
-            <button className="text-sm font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <button className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-2">
               <Key className="w-4 h-4" /> API Keys
             </button>
           </div>
@@ -94,7 +94,7 @@ export default function OperationsAPIDocs() {
 
       <main className="flex-1 max-w-7xl mx-auto w-full flex flex-col md:flex-row overflow-hidden">
         {/* Sidebar Navigation */}
-        <aside className="w-full md:w-64 border-r border-slate-800 bg-[#151822] overflow-y-auto">
+        <aside className="w-full md:w-64 border-r border-blue-200 bg-white overflow-y-auto">
           <div className="p-4">
             <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 px-2">Endpoints</div>
             <nav className="space-y-1">
@@ -107,8 +107,8 @@ export default function OperationsAPIDocs() {
                   }}
                   className={`w-full flex flex-col items-start px-3 py-3 rounded-xl transition-all ${
                     activeEndpoint.id === endpoint.id 
-                      ? "bg-indigo-500/10 border border-indigo-500/30 text-indigo-300" 
-                      : "hover:bg-slate-800/50 text-slate-400 border border-transparent"
+                      ? "bg-indigo-500/10 border border-indigo-500/30 text-indigo-600" 
+                      : "hover:bg-slate-100/50 text-slate-600 border border-transparent"
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-1 w-full">
@@ -149,26 +149,26 @@ export default function OperationsAPIDocs() {
                 }`}>
                   {activeEndpoint.method}
                 </span>
-                <code className="text-lg text-slate-200 font-mono">{activeEndpoint.path}</code>
+                <code className="text-lg text-slate-900 font-mono">{activeEndpoint.path}</code>
               </div>
               
-              <h2 className="text-3xl font-extrabold text-white tracking-tight mb-3">
+              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
                 {activeEndpoint.title}
               </h2>
               
-              <p className="text-slate-400 text-lg max-w-2xl leading-relaxed">
+              <p className="text-slate-600 text-lg max-w-2xl leading-relaxed">
                 {activeEndpoint.description}
               </p>
 
-              <hr className="my-8 border-slate-800" />
+              <hr className="my-8 border-blue-200" />
 
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-4">Parameters</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-4">Parameters</h3>
                   {activeEndpoint.req ? (
-                    <div className="bg-[#151822] border border-slate-800 rounded-xl overflow-hidden">
+                    <div className="bg-white border border-blue-200 rounded-xl overflow-hidden">
                       <table className="w-full text-left text-sm">
-                        <thead className="bg-[#1C212F] border-b border-slate-800 text-slate-300">
+                        <thead className="bg-slate-100 border-b border-blue-200 text-slate-700">
                           <tr>
                             <th className="px-4 py-3 font-semibold">Name</th>
                             <th className="px-4 py-3 font-semibold">Type</th>
@@ -178,22 +178,22 @@ export default function OperationsAPIDocs() {
                         <tbody className="divide-y divide-slate-800">
                           {activeEndpoint.id === 'auth' && (
                             <tr>
-                              <td className="px-4 py-3 font-mono text-indigo-300">api_key</td>
+                              <td className="px-4 py-3 font-mono text-indigo-600">api_key</td>
                               <td className="px-4 py-3 font-mono text-slate-500">string</td>
-                              <td className="px-4 py-3 text-slate-400">Your secret API key found in the dashboard.</td>
+                              <td className="px-4 py-3 text-slate-600">Your secret API key found in the dashboard.</td>
                             </tr>
                           )}
                           {activeEndpoint.id === 'create-awb' && (
                             <>
                               <tr>
-                                <td className="px-4 py-3 font-mono text-indigo-300">origin</td>
+                                <td className="px-4 py-3 font-mono text-indigo-600">origin</td>
                                 <td className="px-4 py-3 font-mono text-slate-500">string</td>
-                                <td className="px-4 py-3 text-slate-400">3-letter IATA airport code.</td>
+                                <td className="px-4 py-3 text-slate-600">3-letter IATA airport code.</td>
                               </tr>
                               <tr>
-                                <td className="px-4 py-3 font-mono text-indigo-300">pieces</td>
+                                <td className="px-4 py-3 font-mono text-indigo-600">pieces</td>
                                 <td className="px-4 py-3 font-mono text-slate-500">integer</td>
-                                <td className="px-4 py-3 text-slate-400">Total number of packages.</td>
+                                <td className="px-4 py-3 text-slate-600">Total number of packages.</td>
                               </tr>
                             </>
                           )}
@@ -210,18 +210,18 @@ export default function OperationsAPIDocs() {
 
           {/* Interactive Request/Response Panel */}
           <div className="w-full lg:w-[450px] space-y-6">
-            <div className="bg-[#1C212F] rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden flex flex-col">
+            <div className="bg-slate-100 rounded-2xl border border-blue-200 shadow-2xl overflow-hidden flex flex-col">
               
               {/* Panel Header */}
-              <div className="bg-[#232A3B] px-4 py-3 border-b border-slate-700/50 flex items-center justify-between">
+              <div className="bg-slate-200 px-4 py-3 border-b border-blue-200 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Code2 className="w-4 h-4 text-slate-400" />
-                  <span className="text-sm font-medium text-slate-300">Request Demo</span>
+                  <Code2 className="w-4 h-4 text-slate-600" />
+                  <span className="text-sm font-medium text-slate-700">Request Demo</span>
                 </div>
                 <button 
                   onClick={handleRunTest}
                   disabled={isRunning}
-                  className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
+                  className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
                 >
                   {isRunning ? <Activity className="w-3.5 h-3.5 animate-pulse" /> : <Play className="w-3.5 h-3.5" />}
                   {isRunning ? 'Sending...' : 'Send Request'}
@@ -229,17 +229,17 @@ export default function OperationsAPIDocs() {
               </div>
 
               {/* Request Body Area */}
-              <div className="p-4 bg-[#1C212F] border-b border-slate-800">
+              <div className="p-4 bg-slate-100 border-b border-blue-200">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Payload</span>
                   {activeEndpoint.req && (
-                    <button onClick={() => handleCopy(activeEndpoint.req!, 'req')} className="text-slate-500 hover:text-slate-300">
+                    <button onClick={() => handleCopy(activeEndpoint.req!, 'req')} className="text-slate-500 hover:text-slate-700">
                       {copied === 'req' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                     </button>
                   )}
                 </div>
                 {activeEndpoint.req ? (
-                  <pre className="font-mono text-sm text-indigo-300 overflow-x-auto p-3 bg-[#151822] rounded-xl border border-slate-800/80">
+                  <pre className="font-mono text-sm text-indigo-600 overflow-x-auto p-3 bg-white rounded-xl border border-blue-200/80">
                     <code>{activeEndpoint.req}</code>
                   </pre>
                 ) : (
@@ -248,7 +248,7 @@ export default function OperationsAPIDocs() {
               </div>
 
               {/* Response Area */}
-              <div className="p-4 bg-[#151822] flex-1 min-h-[250px]">
+              <div className="p-4 bg-white flex-1 min-h-[250px]">
                 <div className="flex justify-between items-center mb-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Response</span>
@@ -257,7 +257,7 @@ export default function OperationsAPIDocs() {
                     )}
                   </div>
                   {testResult && (
-                    <button onClick={() => handleCopy(testResult, 'res')} className="text-slate-500 hover:text-slate-300">
+                    <button onClick={() => handleCopy(testResult, 'res')} className="text-slate-500 hover:text-slate-700">
                       {copied === 'res' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                     </button>
                   )}
@@ -269,11 +269,11 @@ export default function OperationsAPIDocs() {
                     <span className="text-sm animate-pulse">Awaiting response...</span>
                   </div>
                 ) : testResult ? (
-                  <pre className="font-mono text-sm text-emerald-300 overflow-x-auto p-3 bg-[#0F1117] rounded-xl border border-slate-800/80">
+                  <pre className="font-mono text-sm text-emerald-600 overflow-x-auto p-3 bg-slate-50 rounded-xl border border-blue-200/80">
                     <code>{testResult}</code>
                   </pre>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-[150px] text-slate-600 border border-dashed border-slate-800 rounded-xl">
+                  <div className="flex flex-col items-center justify-center h-[150px] text-slate-600 border border-dashed border-blue-200 rounded-xl">
                     <span className="text-sm">Click Send Request to view response</span>
                   </div>
                 )}

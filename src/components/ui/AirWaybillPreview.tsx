@@ -73,7 +73,7 @@ export default function AirWaybillPreview({ awb }: AirWaybillPreviewProps) {
               <div className="mt-2 font-bold">Issued by</div>
               <div className="font-bold">InterGlobe Aviation Limited</div>
             </div>
-            <div className="bg-black text-white px-2 py-4 flex items-center justify-center font-bold text-sm h-12 mt-2">
+            <div className="bg-white text-slate-900 px-2 py-4 flex items-center justify-center font-bold text-sm h-12 mt-2">
               IndiGo
             </div>
           </div>

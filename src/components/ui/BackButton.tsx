@@ -26,11 +26,11 @@ export default function BackButton() {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
         onClick={() => router.back()}
-        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9999] bg-slate-900/90 backdrop-blur-md text-white p-3 md:p-4 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:bg-slate-800 hover:shadow-[0_4px_25px_rgba(0,0,0,0.6)] transition-all flex items-center justify-center group border border-slate-700/50 hover:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9999] bg-white backdrop-blur-md text-slate-900 p-3 md:p-4 rounded-full shadow-lg hover:bg-slate-100 hover:shadow-xl transition-all flex items-center justify-center group border border-blue-200 hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         title="Go Back"
         aria-label="Go Back"
       >
-        <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 group-hover:-translate-x-1 transition-transform text-slate-300 group-hover:text-white" />
+        <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 group-hover:-translate-x-1 transition-transform text-slate-700 group-hover:text-slate-900" />
       </motion.button>
     </AnimatePresence>
   );

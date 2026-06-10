@@ -49,10 +49,10 @@ export default function TrackCargo() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-2 border border-slate-100 relative z-10"
+          className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-2 border border-blue-100 relative z-10"
         >
           <form onSubmit={handleSearch} className="flex items-center">
-            <div className="pl-6 pr-4 text-slate-400">
+            <div className="pl-6 pr-4 text-slate-600">
               <Search className="w-6 h-6" />
             </div>
             <input
@@ -60,7 +60,7 @@ export default function TrackCargo() {
               value={trackingNumber}
               onChange={(e) => setTrackingNumber(e.target.value)}
               placeholder="e.g., AWB-892345 or 123-45678901"
-              className="flex-1 bg-transparent border-none py-5 text-lg text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+              className="flex-1 bg-transparent border-none py-5 text-lg text-slate-800 placeholder:text-slate-600 focus:outline-none focus:ring-0"
               required
             />
             <button
@@ -86,7 +86,7 @@ export default function TrackCargo() {
           className="mt-16 w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           {/* Feature 1 */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center text-center">
+          <div className="bg-white p-6 rounded-2xl border border-blue-100 shadow-sm flex flex-col items-center text-center">
             <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
               <Activity className="w-6 h-6" />
             </div>
@@ -97,7 +97,7 @@ export default function TrackCargo() {
           </div>
 
           {/* Feature 2 */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center text-center">
+          <div className="bg-white p-6 rounded-2xl border border-blue-100 shadow-sm flex flex-col items-center text-center">
             <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-4">
               <Plane className="w-6 h-6" />
             </div>
@@ -108,7 +108,7 @@ export default function TrackCargo() {
           </div>
 
           {/* Feature 3 */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center text-center">
+          <div className="bg-white p-6 rounded-2xl border border-blue-100 shadow-sm flex flex-col items-center text-center">
             <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
               <Box className="w-6 h-6" />
             </div>

@@ -23,7 +23,7 @@ import {
 // Wrap in Suspense for useSearchParams
 export default function BookingPageWrapper() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0A0A0B] flex items-center justify-center"><Loader2 className="w-8 h-8 text-indigo-500 animate-spin" /></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><Loader2 className="w-8 h-8 text-indigo-500 animate-spin" /></div>}>
       <BookingPage />
     </Suspense>
   );
@@ -124,15 +124,15 @@ function BookingPage() {
 
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-slate-200 font-sans selection:bg-indigo-500/30 pt-8 pb-24">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-500/30 pt-8 pb-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
             <Package className="w-8 h-8 text-indigo-500" />
             Complete Your Booking
           </h1>
-          <p className="text-slate-400 mt-2">Enter shipper and consignee details to lock your quote.</p>
+          <p className="text-slate-600 mt-2">Enter shipper and consignee details to lock your quote.</p>
         </motion.div>
 
         <form onSubmit={handleConfirm} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -141,9 +141,9 @@ function BookingPage() {
           <div className="lg:col-span-2 space-y-6">
             
             {/* Shipper Details */}
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+                <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
                   <User className="w-5 h-5 text-indigo-400" /> Shipper Details
                 </h2>
                 <button type="button" onClick={() => prefillSavedAddress('shipper')} className="text-sm text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 px-3 py-1.5 rounded-lg transition-colors border border-indigo-500/20">
@@ -153,47 +153,47 @@ function BookingPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 ml-1">Contact Name</label>
+                  <label className="text-xs text-slate-600 ml-1">Contact Name</label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input required type="text" value={shipper.name} onChange={(e) => setShipper({...shipper, name: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
+                    <input required type="text" value={shipper.name} onChange={(e) => setShipper({...shipper, name: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 ml-1">Company</label>
+                  <label className="text-xs text-slate-600 ml-1">Company</label>
                   <div className="relative">
                     <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input required type="text" value={shipper.company} onChange={(e) => setShipper({...shipper, company: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
+                    <input required type="text" value={shipper.company} onChange={(e) => setShipper({...shipper, company: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 ml-1">Phone</label>
+                  <label className="text-xs text-slate-600 ml-1">Phone</label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input required type="tel" value={shipper.phone} onChange={(e) => setShipper({...shipper, phone: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
+                    <input required type="tel" value={shipper.phone} onChange={(e) => setShipper({...shipper, phone: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 ml-1">Email</label>
+                  <label className="text-xs text-slate-600 ml-1">Email</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input required type="email" value={shipper.email} onChange={(e) => setShipper({...shipper, email: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
+                    <input required type="email" value={shipper.email} onChange={(e) => setShipper({...shipper, email: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
                   </div>
                 </div>
                 <div className="space-y-1 md:col-span-2">
-                  <label className="text-xs text-slate-400 ml-1">Pickup Address</label>
+                  <label className="text-xs text-slate-600 ml-1">Pickup Address</label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
-                    <textarea required rows={2} value={shipper.address} onChange={(e) => setShipper({...shipper, address: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none" />
+                    <textarea required rows={2} value={shipper.address} onChange={(e) => setShipper({...shipper, address: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none" />
                   </div>
                 </div>
               </div>
             </motion.div>
 
             {/* Consignee Details */}
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+                <h2 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-amber-400" /> Consignee Details
                 </h2>
                 <button type="button" onClick={() => prefillSavedAddress('consignee')} className="text-sm text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 rounded-lg transition-colors border border-amber-500/20">
@@ -203,38 +203,38 @@ function BookingPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 ml-1">Contact Name</label>
+                  <label className="text-xs text-slate-600 ml-1">Contact Name</label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input required type="text" value={consignee.name} onChange={(e) => setConsignee({...consignee, name: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
+                    <input required type="text" value={consignee.name} onChange={(e) => setConsignee({...consignee, name: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 ml-1">Company</label>
+                  <label className="text-xs text-slate-600 ml-1">Company</label>
                   <div className="relative">
                     <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input required type="text" value={consignee.company} onChange={(e) => setConsignee({...consignee, company: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
+                    <input required type="text" value={consignee.company} onChange={(e) => setConsignee({...consignee, company: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 ml-1">Phone</label>
+                  <label className="text-xs text-slate-600 ml-1">Phone</label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input required type="tel" value={consignee.phone} onChange={(e) => setConsignee({...consignee, phone: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
+                    <input required type="tel" value={consignee.phone} onChange={(e) => setConsignee({...consignee, phone: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-slate-400 ml-1">Email</label>
+                  <label className="text-xs text-slate-600 ml-1">Email</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input required type="email" value={consignee.email} onChange={(e) => setConsignee({...consignee, email: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
+                    <input required type="email" value={consignee.email} onChange={(e) => setConsignee({...consignee, email: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" />
                   </div>
                 </div>
                 <div className="space-y-1 md:col-span-2">
-                  <label className="text-xs text-slate-400 ml-1">Delivery Address</label>
+                  <label className="text-xs text-slate-600 ml-1">Delivery Address</label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
-                    <textarea required rows={2} value={consignee.address} onChange={(e) => setConsignee({...consignee, address: e.target.value})} className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none" />
+                    <textarea required rows={2} value={consignee.address} onChange={(e) => setConsignee({...consignee, address: e.target.value})} className="w-full bg-white border border-blue-200 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none" />
                   </div>
                 </div>
               </div>
@@ -243,9 +243,9 @@ function BookingPage() {
 
           {/* Sidebar - Quote Summary */}
           <div className="space-y-6">
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl overflow-hidden sticky top-8">
-              <div className="p-6 border-b border-slate-800">
-                <h2 className="text-lg font-semibold text-white mb-1">Quote Summary</h2>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl overflow-hidden sticky top-8">
+              <div className="p-6 border-b border-blue-200">
+                <h2 className="text-lg font-semibold text-slate-900 mb-1">Quote Summary</h2>
                 <div className="flex items-center gap-2 text-xs text-green-400 bg-green-500/10 w-fit px-2 py-1 rounded-md border border-green-500/20">
                   <ShieldCheck className="w-3 h-3" /> Rate Locked
                 </div>
@@ -253,14 +253,14 @@ function BookingPage() {
 
               <div className="p-6 space-y-6">
                 {/* Route Info */}
-                <div className="flex justify-between items-center text-center bg-[#121622] p-4 rounded-xl border border-slate-800/50">
+                <div className="flex justify-between items-center text-center bg-white p-4 rounded-xl border border-blue-200/50">
                   <div>
-                    <div className="text-xl font-bold text-white">{quote.origin}</div>
+                    <div className="text-xl font-bold text-slate-900">{quote.origin}</div>
                     <div className="text-xs text-slate-500">Origin</div>
                   </div>
                   <div className="px-2 text-slate-600">→</div>
                   <div>
-                    <div className="text-xl font-bold text-white">{quote.destination}</div>
+                    <div className="text-xl font-bold text-slate-900">{quote.destination}</div>
                     <div className="text-xs text-slate-500">Destination</div>
                   </div>
                 </div>
@@ -269,31 +269,31 @@ function BookingPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <div className="text-xs text-slate-500">Gross Weight</div>
-                    <div className="font-medium text-slate-200">{quote.weight} kg</div>
+                    <div className="font-medium text-slate-900">{quote.weight} kg</div>
                   </div>
                   <div>
                     <div className="text-xs text-slate-500">Commodity</div>
-                    <div className="font-medium text-slate-200">{quote.commodity}</div>
+                    <div className="font-medium text-slate-900">{quote.commodity}</div>
                   </div>
                 </div>
 
                 {/* Price Breakdown */}
-                <div className="pt-4 border-t border-slate-800/50 space-y-3">
+                <div className="pt-4 border-t border-blue-200/50 space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Base Freight</span>
-                    <span className="text-slate-200 font-medium">₹{formatIndianNumber(quote.baseFreight)}</span>
+                    <span className="text-slate-600">Base Freight</span>
+                    <span className="text-slate-900 font-medium">₹{formatIndianNumber(quote.baseFreight)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Other Charges</span>
-                    <span className="text-slate-200 font-medium">₹{formatIndianNumber(quote.otherCharges)}</span>
+                    <span className="text-slate-600">Other Charges</span>
+                    <span className="text-slate-900 font-medium">₹{formatIndianNumber(quote.otherCharges)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">IGST (18%)</span>
-                    <span className="text-slate-200 font-medium">₹{formatIndianNumber(quote.igst)}</span>
+                    <span className="text-slate-600">IGST (18%)</span>
+                    <span className="text-slate-900 font-medium">₹{formatIndianNumber(quote.igst)}</span>
                   </div>
                   
-                  <div className="pt-3 flex justify-between items-end border-t border-slate-700/50">
-                    <span className="text-slate-300 font-medium">Total Amount</span>
+                  <div className="pt-3 flex justify-between items-end border-t border-blue-200">
+                    <span className="text-slate-700 font-medium">Total Amount</span>
                     <span className="text-2xl font-bold text-indigo-400">₹{formatIndianNumber(quote.total)}</span>
                   </div>
                 </div>
@@ -329,22 +329,22 @@ function BookingPage() {
               <motion.div
                 initial={{ scale: 0.9, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
-                className="bg-slate-900 border border-slate-800 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl"
+                className="bg-white border border-blue-200 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl"
               >
                 <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle2 className="w-8 h-8 text-green-500" />
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Booking Confirmed!</h2>
-                <p className="text-slate-400 mb-6">Your shipment has been successfully booked.</p>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Booking Confirmed!</h2>
+                <p className="text-slate-600 mb-6">Your shipment has been successfully booked.</p>
                 
-                <div className="bg-[#121622] rounded-xl p-4 mb-8 space-y-3 text-left border border-slate-800/50">
-                  <div className="flex justify-between items-center pb-3 border-b border-slate-800">
+                <div className="bg-white rounded-xl p-4 mb-8 space-y-3 text-left border border-blue-200/50">
+                  <div className="flex justify-between items-center pb-3 border-b border-blue-200">
                     <span className="text-slate-500 text-sm">AWB Number</span>
-                    <span className="text-white font-semibold">{confirmedBooking.awb}</span>
+                    <span className="text-slate-900 font-semibold">{confirmedBooking.awb}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-slate-500 text-sm">LR Number</span>
-                    <span className="text-white font-semibold">{confirmedBooking.lrNumber}</span>
+                    <span className="text-slate-900 font-semibold">{confirmedBooking.lrNumber}</span>
                   </div>
                 </div>
 

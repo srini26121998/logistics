@@ -44,16 +44,16 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
         />
       </div>
 
-      <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0 bg-slate-900/40 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative z-10">
+      <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0 bg-white/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative z-10">
         {/* Left Side: Branding/Visuals */}
         <div className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-blue-900/40 to-indigo-900/40 border-r border-white/5 relative overflow-hidden">
           {/* Subtle grid pattern overlay */}
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent bg-[length:20px_20px]"></div>
           
           <div className="relative z-10">
-            <Link href="/" className="flex items-center gap-3 text-white mb-16 hover:opacity-80 transition-opacity">
+            <Link href="/" className="flex items-center gap-3 text-slate-900 mb-16 hover:opacity-80 transition-opacity">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 border border-white/10">
-                <Plane className="w-6 h-6 text-white" />
+                <Plane className="w-6 h-6 text-slate-900" />
               </div>
               <span className="text-2xl font-bold tracking-tight">NexusLogistics</span>
             </Link>
@@ -67,23 +67,23 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
                 <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
                 System Operational
               </div>
-              <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-4xl font-bold text-slate-900 mb-6 leading-tight">
                 Global supply chain <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                   intelligence.
                 </span>
               </h1>
-              <p className="text-slate-300 text-lg leading-relaxed max-w-md">
+              <p className="text-slate-700 text-lg leading-relaxed max-w-md">
                 Orchestrate your freight, track shipments in real-time, and optimize your global operations with our enterprise logistics platform.
               </p>
             </motion.div>
           </div>
 
           <div className="relative z-10 flex flex-col gap-4">
-            <div className="flex items-center gap-4 text-sm text-slate-400">
+            <div className="flex items-center gap-4 text-sm text-slate-600">
               <div className="flex -space-x-3">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-slate-900 bg-slate-800 flex items-center justify-center overflow-hidden relative">
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-slate-900 bg-slate-100 flex items-center justify-center overflow-hidden relative">
                     <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 to-purple-500 opacity-20"></div>
                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" className="w-full h-full rounded-full object-cover mix-blend-overlay opacity-80" />
                   </div>
@@ -99,9 +99,9 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <Plane className="w-5 h-5 text-white" />
+              <Plane className="w-5 h-5 text-slate-900" />
             </div>
-            <span className="text-xl font-bold text-white tracking-tight">NexusLogistics</span>
+            <span className="text-xl font-bold text-slate-900 tracking-tight">NexusLogistics</span>
           </div>
 
           <motion.div
@@ -111,8 +111,8 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
             className="w-full max-w-md mx-auto"
           >
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-white mb-2">{title}</h2>
-              <p className="text-slate-400">{subtitle}</p>
+              <h2 className="text-3xl font-bold text-slate-900 mb-2">{title}</h2>
+              <p className="text-slate-600">{subtitle}</p>
             </div>
 
             {children}

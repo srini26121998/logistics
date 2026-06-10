@@ -23,7 +23,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="bg-white border-b border-slate-100 sticky top-0 z-50">
+    <header className="bg-white border-b border-blue-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <Link href="/" className="flex items-center text-indigo-600 font-extrabold text-2xl tracking-tighter hover:opacity-80 transition-opacity">
@@ -70,7 +70,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b border-slate-100 overflow-hidden"
+            className="md:hidden bg-white border-b border-blue-100 overflow-hidden"
           >
             <div className="px-4 py-4 space-y-4 flex flex-col">
               {navLinks.map(link => (
@@ -83,11 +83,11 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
+              <div className="pt-4 border-t border-blue-100 flex flex-col gap-3">
                 <Link 
                   href="/login" 
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-2 border border-slate-200 rounded-lg text-slate-700 font-semibold"
+                  className="flex items-center justify-center gap-2 w-full py-2 border border-blue-200 rounded-lg text-slate-700 font-semibold"
                 >
                   <User className="w-4 h-4" /> Client Portal
                 </Link>

@@ -70,19 +70,19 @@ export default function ShipmentBillingPage() {
     <div className="space-y-6 pb-20">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button onClick={() => router.back()} className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors">
+          <button onClick={() => router.back()} className="p-2 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
               Multi-Stage Billing
             </h1>
-            <p className="text-sm text-slate-400 mt-1">Shipment {shipment.awb} • {shipment.origin} to {shipment.destination}</p>
+            <p className="text-sm text-slate-500 mt-1">Shipment {shipment.awb} • {shipment.origin} to {shipment.destination}</p>
           </div>
         </div>
         <button
           onClick={() => setShowPreview(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-fuchsia-600 hover:bg-fuchsia-500 text-white rounded-lg text-sm font-medium transition-colors shadow-[0_0_15px_rgba(192,38,211,0.3)]"
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-slate-900 rounded-lg text-sm font-medium transition-colors shadow-[0_0_15px_rgba(59,130,246,0.3)]"
         >
           <Eye className="w-4 h-4" /> Preview Invoice
         </button>
@@ -92,29 +92,29 @@ export default function ShipmentBillingPage() {
         
         {/* Left Col - Config */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
-            <h2 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Route Configuration</h2>
+          <div className="bg-slate-100/50 backdrop-blur-md border border-blue-200 rounded-2xl p-6 card-3d">
+            <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Route Configuration</h2>
             
             <div className="space-y-4">
-              <label className="flex items-center gap-3 p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer">
+              <label className="flex items-center gap-3 p-3 bg-white border border-blue-200 rounded-xl cursor-pointer">
                 <input 
                   type="checkbox" 
                   checked={hasPitstop} 
                   onChange={(e) => setHasPitstop(e.target.checked)}
-                  className="w-4 h-4 accent-fuchsia-500 rounded"
+                  className="w-4 h-4 accent-blue-500 rounded"
                 />
-                <span className="text-sm font-medium text-slate-300">Include Pitstop (Hub)</span>
+                <span className="text-sm font-medium text-slate-600">Include Pitstop (Hub)</span>
               </label>
 
               {hasPitstop && (
-                <div className="pl-8 relative before:absolute before:left-5 before:top-0 before:bottom-0 before:w-px before:bg-slate-800">
+                <div className="pl-8 relative before:absolute before:left-5 before:top-0 before:bottom-0 before:w-px before:bg-slate-200">
                   <div className="relative">
-                    <div className="absolute left-[-17px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-fuchsia-500 shadow-[0_0_10px_rgba(192,38,211,0.5)] z-10"></div>
-                    <label className="block text-xs font-medium text-slate-400 mb-1 uppercase">Pitstop Location</label>
+                    <div className="absolute left-[-17px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] z-10"></div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1 uppercase">Pitstop Location</label>
                     <select 
                       value={pitstop}
                       onChange={(e) => setPitstop(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:border-fuchsia-500 focus:outline-none"
+                      className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none"
                     >
                       <option value="MAA">MAA - Chennai</option>
                       <option value="DEL">DEL - Delhi</option>
@@ -125,28 +125,28 @@ export default function ShipmentBillingPage() {
               )}
             </div>
 
-            <div className="mt-6 flex items-center justify-between p-4 bg-slate-950 rounded-xl border border-slate-800">
+            <div className="mt-6 flex items-center justify-between p-4 bg-white rounded-xl border border-blue-200">
                <div className="text-center flex-1">
-                 <div className="text-sm font-bold text-slate-200">{shipment.origin}</div>
+                 <div className="text-sm font-bold text-slate-700">{shipment.origin}</div>
                </div>
                {hasPitstop && (
                  <>
                    <div className="text-slate-500"><MapPin className="w-4 h-4"/></div>
                    <div className="text-center flex-1">
-                     <div className="text-sm font-bold text-fuchsia-400">{pitstop}</div>
+                     <div className="text-sm font-bold text-blue-400">{pitstop}</div>
                      <div className="text-[10px] text-slate-500 uppercase">Billing Node</div>
                    </div>
                  </>
                )}
                <div className="text-slate-500"><MapPin className="w-4 h-4"/></div>
                <div className="text-center flex-1">
-                 <div className="text-sm font-bold text-slate-200">{shipment.destination}</div>
+                 <div className="text-sm font-bold text-slate-700">{shipment.destination}</div>
                </div>
             </div>
           </div>
 
-          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
-            <h2 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Billing Stages</h2>
+          <div className="bg-slate-100/50 backdrop-blur-md border border-blue-200 rounded-2xl p-6 card-3d">
+            <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Billing Stages</h2>
             <div className="space-y-3">
               {billTabs.map((tab) => (
                 <button
@@ -154,8 +154,8 @@ export default function ShipmentBillingPage() {
                   onClick={() => setActiveBillType(tab.id as BillType)}
                   className={`w-full text-left p-4 rounded-xl transition-all border ${
                     activeBillType === tab.id 
-                      ? "bg-fuchsia-500/10 border-fuchsia-500/30 text-fuchsia-400 shadow-[0_0_15px_rgba(192,38,211,0.1)]" 
-                      : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:bg-slate-900"
+                      ? "bg-blue-500/10 border-blue-500/30 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.1)]" 
+                      : "bg-white border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-100"
                   }`}
                 >
                   <div className="font-bold text-sm mb-1">{tab.label}</div>
@@ -168,30 +168,30 @@ export default function ShipmentBillingPage() {
 
         {/* Right Col - Invoice Config & Details */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-              <FileText className="w-5 h-5 text-fuchsia-400" />
+          <div className="bg-slate-100/50 backdrop-blur-md border border-blue-200 rounded-2xl p-6 card-3d">
+            <h2 className="text-lg font-semibold text-slate-900 mb-6 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-blue-400" />
               {billTabs.find(t => t.id === activeBillType)?.label} Details
             </h2>
 
             <div className="grid grid-cols-2 gap-6 mb-8">
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <div className="bg-white p-4 rounded-xl border border-blue-200">
                 <div className="text-xs text-slate-500 uppercase tracking-wider mb-2">Billing Assignee (Shipper)</div>
-                <div className="font-bold text-slate-200">{shipment.shipper}</div>
-                <div className="text-xs text-slate-400 mt-1 font-mono">PAN: ABCDE1234F</div>
-                <div className="text-xs text-slate-400 mt-1 font-mono">GSTIN: 07ABCDE1234F1Z5</div>
+                <div className="font-bold text-slate-700">{shipment.shipper}</div>
+                <div className="text-xs text-slate-500 mt-1 font-mono">PAN: ABCDE1234F</div>
+                <div className="text-xs text-slate-500 mt-1 font-mono">GSTIN: 07ABCDE1234F1Z5</div>
               </div>
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <div className="bg-white p-4 rounded-xl border border-blue-200">
                 <div className="text-xs text-slate-500 uppercase tracking-wider mb-2">Billing Consignee</div>
-                <div className="font-bold text-slate-200">{shipment.consignee}</div>
-                <div className="text-xs text-slate-400 mt-1 font-mono">PAN: PQRST9876G</div>
-                <div className="text-xs text-slate-400 mt-1 font-mono">GSTIN: 27PQRST9876G1Z2</div>
+                <div className="font-bold text-slate-700">{shipment.consignee}</div>
+                <div className="text-xs text-slate-500 mt-1 font-mono">PAN: PQRST9876G</div>
+                <div className="text-xs text-slate-500 mt-1 font-mono">GSTIN: 27PQRST9876G1Z2</div>
               </div>
             </div>
 
-            <div className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
+            <div className="bg-white rounded-xl border border-blue-200 overflow-hidden">
               <table className="w-full text-left text-sm">
-                <thead className="bg-slate-900/80 border-b border-slate-800 text-slate-400">
+                <thead className="bg-slate-100/80 border-b border-blue-200 text-slate-500">
                   <tr>
                     <th className="p-4 font-semibold">Description</th>
                     <th className="p-4 font-semibold text-right">Freight</th>
@@ -199,29 +199,29 @@ export default function ShipmentBillingPage() {
                     <th className="p-4 font-semibold text-right">Taxable Amount</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/50">
+                <tbody className="divide-y divide-slate-200">
                   <tr>
-                    <td className="p-4 text-slate-200">
+                    <td className="p-4 text-slate-700">
                       <div className="font-medium">{billData.description}</div>
                       <div className="text-xs text-slate-500 mt-1">Route: {shipment.origin} {hasPitstop ? `→ ${pitstop}` : ''} → {shipment.destination}</div>
                     </td>
-                    <td className="p-4 text-right text-slate-300 font-mono">{formatINR(billData.freight)}</td>
-                    <td className="p-4 text-right text-slate-300 font-mono">{formatINR(billData.otherCharges)}</td>
-                    <td className="p-4 text-right text-white font-mono font-bold">{formatINR(billData.taxable)}</td>
+                    <td className="p-4 text-right text-slate-600 font-mono">{formatINR(billData.freight)}</td>
+                    <td className="p-4 text-right text-slate-600 font-mono">{formatINR(billData.otherCharges)}</td>
+                    <td className="p-4 text-right text-slate-900 font-mono font-bold">{formatINR(billData.taxable)}</td>
                   </tr>
                 </tbody>
               </table>
-              <div className="bg-slate-900/50 p-4 border-t border-slate-800 flex justify-end">
+              <div className="bg-slate-100/50 p-4 border-t border-blue-200 flex justify-end">
                 <div className="w-64 space-y-2 text-sm">
-                  <div className="flex justify-between text-slate-400">
+                  <div className="flex justify-between text-slate-500">
                     <span>Taxable Amount</span>
                     <span className="font-mono">{formatINR(billData.taxable)}</span>
                   </div>
-                  <div className="flex justify-between text-slate-400">
+                  <div className="flex justify-between text-slate-500">
                     <span>IGST (18%)</span>
                     <span className="font-mono">{formatINR(billData.igst)}</span>
                   </div>
-                  <div className="flex justify-between text-fuchsia-400 font-bold pt-2 border-t border-slate-700/50 text-base">
+                  <div className="flex justify-between text-blue-400 font-bold pt-2 border-t border-blue-200/50 text-base">
                     <span>Net Payable</span>
                     <span className="font-mono">{formatINR(billData.net)}</span>
                   </div>
@@ -236,7 +236,7 @@ export default function ShipmentBillingPage() {
       {/* Full Page Invoice Preview Modal */}
       <AnimatePresence>
         {showPreview && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-sm p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/90 backdrop-blur-sm p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -244,13 +244,13 @@ export default function ShipmentBillingPage() {
               className="bg-white rounded-2xl shadow-2xl w-full max-w-[1000px] h-[90vh] flex flex-col overflow-hidden text-slate-900"
             >
               {/* Modal Header */}
-              <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 print:hidden">
+              <div className="px-6 py-4 border-b border-blue-200 flex justify-between items-center bg-slate-50 print:hidden">
                 <h2 className="text-lg font-bold text-slate-800">Invoice Preview - {billTabs.find(t=>t.id===activeBillType)?.label}</h2>
                 <div className="flex items-center gap-3">
                   <button onClick={handlePrint} className="flex items-center gap-2 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-sm font-semibold transition-colors">
                     <Printer className="w-4 h-4" /> Print / PDF
                   </button>
-                  <button onClick={() => setShowPreview(false)} className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-semibold transition-colors">
+                  <button onClick={() => setShowPreview(false)} className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-900 rounded-lg text-sm font-semibold transition-colors">
                     Close
                   </button>
                 </div>
@@ -276,14 +276,14 @@ export default function ShipmentBillingPage() {
                         <p><span className="font-bold">INVOICE NO:</span> SVL/000/26-27</p>
                         <p><span className="font-bold">INVOICE DATE:</span> {new Date().toLocaleDateString('en-GB')}</p>
                         <p><span className="font-bold">SAC CODE:</span> 996531</p>
-                        <p><span className="font-bold text-fuchsia-600">BILL TYPE:</span> {billTabs.find(t=>t.id===activeBillType)?.label.toUpperCase()}</p>
+                        <p><span className="font-bold text-blue-600">BILL TYPE:</span> {billTabs.find(t=>t.id===activeBillType)?.label.toUpperCase()}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Parties Info */}
-                  <div className="flex border border-slate-300 mb-6">
-                    <div className="w-1/2 p-3 border-r border-slate-300">
+                  <div className="flex border border-blue-200 mb-6">
+                    <div className="w-1/2 p-3 border-r border-blue-200">
                       <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">To (Consignee / Billed To)</p>
                       <h3 className="font-black text-slate-900 mb-1">{shipment.consignee}</h3>
                       <p className="text-xs text-slate-700 font-medium font-mono">
@@ -303,73 +303,73 @@ export default function ShipmentBillingPage() {
 
                   {/* Route Info */}
                   {hasPitstop && (
-                    <div className="mb-6 p-3 bg-fuchsia-50/50 border border-fuchsia-100 rounded-lg flex items-center justify-center gap-4 text-sm font-semibold text-fuchsia-900">
+                    <div className="mb-6 p-3 bg-blue-50/50 border border-blue-100 rounded-lg flex items-center justify-center gap-4 text-sm font-semibold text-blue-900">
                       <span>{shipment.origin}</span>
-                      <span className="text-fuchsia-400">→</span>
-                      <span className="bg-fuchsia-100 px-2 py-0.5 rounded text-fuchsia-800">Pitstop: {pitstop}</span>
-                      <span className="text-fuchsia-400">→</span>
+                      <span className="text-blue-400">→</span>
+                      <span className="bg-blue-100 px-2 py-0.5 rounded text-blue-800">Pitstop: {pitstop}</span>
+                      <span className="text-blue-400">→</span>
                       <span>{shipment.destination}</span>
                     </div>
                   )}
 
                   {/* Main Table */}
-                  <div className="mb-6 border border-slate-300">
+                  <div className="mb-6 border border-blue-200">
                     <table className="w-full text-left text-xs border-collapse">
-                      <thead className="bg-slate-100 border-b border-slate-300">
+                      <thead className="bg-slate-100 border-b border-blue-200">
                         <tr>
-                          <th className="py-2 px-2 font-bold text-center border-r border-slate-300">Sr.</th>
-                          <th className="py-2 px-2 font-bold border-r border-slate-300">CN DT</th>
-                          <th className="py-2 px-2 font-bold border-r border-slate-300">CN NO.</th>
-                          <th className="py-2 px-2 font-bold border-r border-slate-300">FLIGHT</th>
-                          <th className="py-2 px-2 font-bold border-r border-slate-300">ORIGIN</th>
-                          <th className="py-2 px-2 font-bold border-r border-slate-300">DEST</th>
-                          <th className="py-2 px-2 font-bold text-right border-r border-slate-300">NOP</th>
-                          <th className="py-2 px-2 font-bold text-right border-r border-slate-300">CH.WT</th>
-                          <th className="py-2 px-2 font-bold text-right border-r border-slate-300">RATE</th>
-                          <th className="py-2 px-2 font-bold text-right border-r border-slate-300">FREIGHT</th>
-                          <th className="py-2 px-2 font-bold text-right border-r border-slate-300">OTHER CHARGES</th>
-                          <th className="py-2 px-2 font-bold text-right border-r border-slate-300">GROSS</th>
-                          <th className="py-2 px-2 font-bold text-right border-r border-slate-300">TAXABLE</th>
-                          <th className="py-2 px-2 font-bold text-right border-r border-slate-300">IGST 18%</th>
+                          <th className="py-2 px-2 font-bold text-center border-r border-blue-200">Sr.</th>
+                          <th className="py-2 px-2 font-bold border-r border-blue-200">CN DT</th>
+                          <th className="py-2 px-2 font-bold border-r border-blue-200">CN NO.</th>
+                          <th className="py-2 px-2 font-bold border-r border-blue-200">FLIGHT</th>
+                          <th className="py-2 px-2 font-bold border-r border-blue-200">ORIGIN</th>
+                          <th className="py-2 px-2 font-bold border-r border-blue-200">DEST</th>
+                          <th className="py-2 px-2 font-bold text-right border-r border-blue-200">NOP</th>
+                          <th className="py-2 px-2 font-bold text-right border-r border-blue-200">CH.WT</th>
+                          <th className="py-2 px-2 font-bold text-right border-r border-blue-200">RATE</th>
+                          <th className="py-2 px-2 font-bold text-right border-r border-blue-200">FREIGHT</th>
+                          <th className="py-2 px-2 font-bold text-right border-r border-blue-200">OTHER CHARGES</th>
+                          <th className="py-2 px-2 font-bold text-right border-r border-blue-200">GROSS</th>
+                          <th className="py-2 px-2 font-bold text-right border-r border-blue-200">TAXABLE</th>
+                          <th className="py-2 px-2 font-bold text-right border-r border-blue-200">IGST 18%</th>
                           <th className="py-2 px-2 font-bold text-right">NET PAYABLE</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className="border-b border-slate-300">
-                          <td className="py-2 px-2 text-center border-r border-slate-300">1</td>
-                          <td className="py-2 px-2 border-r border-slate-300 whitespace-nowrap">{shipment.bookedDate}</td>
-                          <td className="py-2 px-2 border-r border-slate-300 font-bold whitespace-nowrap">{shipment.awb}</td>
-                          <td className="py-2 px-2 border-r border-slate-300">{shipment.flight || 'TBA'}</td>
-                          <td className="py-2 px-2 border-r border-slate-300">{shipment.origin}</td>
-                          <td className="py-2 px-2 border-r border-slate-300">{hasPitstop && activeBillType === 'prepaid' ? pitstop : shipment.destination}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{shipment.pieces}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{shipment.weight.replace(' kg','')}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{(billData.freight / parseInt(shipment.weight)).toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.freight.toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.otherCharges.toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.taxable.toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.taxable.toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.igst.toFixed(2)}</td>
+                        <tr className="border-b border-blue-200">
+                          <td className="py-2 px-2 text-center border-r border-blue-200">1</td>
+                          <td className="py-2 px-2 border-r border-blue-200 whitespace-nowrap">{shipment.bookedDate}</td>
+                          <td className="py-2 px-2 border-r border-blue-200 font-bold whitespace-nowrap">{shipment.awb}</td>
+                          <td className="py-2 px-2 border-r border-blue-200">{shipment.flight || 'TBA'}</td>
+                          <td className="py-2 px-2 border-r border-blue-200">{shipment.origin}</td>
+                          <td className="py-2 px-2 border-r border-blue-200">{hasPitstop && activeBillType === 'prepaid' ? pitstop : shipment.destination}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{shipment.pieces}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{shipment.weight.replace(' kg','')}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{(billData.freight / parseInt(shipment.weight)).toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.freight.toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.otherCharges.toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.taxable.toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.taxable.toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.igst.toFixed(2)}</td>
                           <td className="py-2 px-2 text-right font-bold">{billData.net.toFixed(2)}</td>
                         </tr>
                         {/* Empty filler rows */}
                         {[...Array(5)].map((_, i) => (
-                          <tr key={i} className="h-8 border-b border-slate-300">
-                            <td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td className="border-r border-slate-300"></td><td></td>
+                          <tr key={i} className="h-8 border-b border-blue-200">
+                            <td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td className="border-r border-blue-200"></td><td></td>
                           </tr>
                         ))}
                       </tbody>
                       <tfoot>
                         <tr className="bg-slate-100 font-bold">
-                          <td colSpan={6} className="py-2 px-2 text-center border-r border-slate-300">GRAND TOTAL</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{shipment.pieces}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{shipment.weight.replace(' kg','')}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300"></td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.freight.toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.otherCharges.toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.taxable.toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.taxable.toFixed(2)}</td>
-                          <td className="py-2 px-2 text-right border-r border-slate-300">{billData.igst.toFixed(2)}</td>
+                          <td colSpan={6} className="py-2 px-2 text-center border-r border-blue-200">GRAND TOTAL</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{shipment.pieces}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{shipment.weight.replace(' kg','')}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200"></td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.freight.toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.otherCharges.toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.taxable.toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.taxable.toFixed(2)}</td>
+                          <td className="py-2 px-2 text-right border-r border-blue-200">{billData.igst.toFixed(2)}</td>
                           <td className="py-2 px-2 text-right font-black">{billData.net.toFixed(2)}</td>
                         </tr>
                       </tfoot>
@@ -377,8 +377,8 @@ export default function ShipmentBillingPage() {
                   </div>
 
                   {/* Bank Details & Terms */}
-                  <div className="mt-auto flex border border-slate-300 mb-6 text-xs">
-                    <div className="w-1/2 p-3 border-r border-slate-300">
+                  <div className="mt-auto flex border border-blue-200 mb-6 text-xs">
+                    <div className="w-1/2 p-3 border-r border-blue-200">
                       <h4 className="font-bold underline mb-2">Terms & Conditions:</h4>
                       <ol className="list-decimal pl-4 space-y-1 font-medium">
                         <li>Difference or any Discrepancy in Bill must be informed within 3 days.</li>
@@ -390,7 +390,7 @@ export default function ShipmentBillingPage() {
                       </ol>
                     </div>
                     <div className="w-1/2 p-3">
-                      <h4 className="font-bold underline mb-2 text-fuchsia-900">Bank Details :</h4>
+                      <h4 className="font-bold underline mb-2 text-blue-900">Bank Details :</h4>
                       <p className="font-bold">M/s. SVL CARGO SERVICES,</p>
                       <p className="font-medium">HDFC BANK LIMITED, NANGANALLUR BRANCH, CHENNAI-600061</p>
                       <p className="font-mono mt-1"><span className="font-bold">IFSC CODE:</span> HDFC0000674</p>
@@ -402,7 +402,7 @@ export default function ShipmentBillingPage() {
                   <div className="flex justify-end pt-8">
                     <div className="text-center w-64">
                       <p className="font-bold mb-8">For - SVL CARGO SERVICES</p>
-                      <div className="border-t-2 border-slate-800 pt-2 font-bold uppercase tracking-widest text-xs">
+                      <div className="border-t-2 border-blue-200 pt-2 font-bold uppercase tracking-widest text-xs">
                         Authorized Signatory
                       </div>
                     </div>

@@ -189,15 +189,15 @@ export default function DynamicQuoteCalculator() {
   }, [origin, destination, chargeableWeight, commodity, carrier, serviceType, insurance, declaredValue]);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] py-8 px-4 sm:px-6 lg:px-8 font-sans pb-32 text-slate-200">
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 font-sans pb-32 text-slate-900">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-2">
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
               <Zap className="w-8 h-8 text-indigo-500" />
               Dynamic Quote Calculator
             </h1>
-            <p className="text-sm text-slate-400 mt-1 max-w-2xl">
+            <p className="text-sm text-slate-600 mt-1 max-w-2xl">
               Get instant, accurate pricing for your cargo shipments. Rates update in real-time as you type.
             </p>
           </div>
@@ -210,9 +210,9 @@ export default function DynamicQuoteCalculator() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-slate-900/50 backdrop-blur-md rounded-2xl shadow-sm border border-slate-800 p-6"
+              className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-blue-200 p-6"
             >
-              <h2 className="text-lg font-semibold text-white mb-5 flex items-center">
+              <h2 className="text-lg font-semibold text-slate-900 mb-5 flex items-center">
                 <Box className="w-5 h-5 mr-2 text-indigo-400" />
                 Routing & Dimensions
               </h2>
@@ -220,14 +220,14 @@ export default function DynamicQuoteCalculator() {
               {/* Routing */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center">
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5 flex items-center">
                     <PlaneTakeoff className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
                     Origin Airport
                   </label>
                   <select 
                     value={origin}
                     onChange={(e) => setOrigin(e.target.value)}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all shadow-sm appearance-none"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all shadow-sm appearance-none"
                   >
                     {AIRPORTS.map(apt => (
                       <option key={apt.code} value={apt.code}>{apt.code} - {apt.name}</option>
@@ -235,14 +235,14 @@ export default function DynamicQuoteCalculator() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center">
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5 flex items-center">
                     <PlaneLanding className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
                     Destination Airport
                   </label>
                   <select 
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
-                    className={`w-full bg-[#121622] border rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all shadow-sm appearance-none ${origin === destination ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500' : 'border-slate-700/80'}`}
+                    className={`w-full bg-white border rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all shadow-sm appearance-none ${origin === destination ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500' : 'border-slate-300/80'}`}
                   >
                     {AIRPORTS.map(apt => (
                       <option key={apt.code} value={apt.code} disabled={apt.code === origin}>{apt.code} - {apt.name}</option>
@@ -259,40 +259,40 @@ export default function DynamicQuoteCalculator() {
               {/* Dimensions and Weight */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Length (cm)</label>
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5">Length (cm)</label>
                   <input 
                     type="number" 
                     min="0"
                     value={length}
                     onChange={(e) => setLength(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-sm"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-sm"
                     placeholder="L"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Width (cm)</label>
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5">Width (cm)</label>
                   <input 
                     type="number" 
                     min="0"
                     value={width}
                     onChange={(e) => setWidth(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-sm"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-sm"
                     placeholder="W"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Height (cm)</label>
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5">Height (cm)</label>
                   <input 
                     type="number" 
                     min="0"
                     value={height}
                     onChange={(e) => setHeight(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-sm"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-sm"
                     placeholder="H"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center">
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5 flex items-center">
                     <Scale className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
                     Gross Wt (kg)
                   </label>
@@ -301,7 +301,7 @@ export default function DynamicQuoteCalculator() {
                     min="0"
                     value={actualWeight}
                     onChange={(e) => setActualWeight(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-sm"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-sm"
                     placeholder="0.00"
                   />
                 </div>
@@ -325,34 +325,34 @@ export default function DynamicQuoteCalculator() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-slate-900/50 backdrop-blur-md rounded-2xl shadow-sm border border-slate-800 p-6"
+              className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-blue-200 p-6"
             >
-              <h2 className="text-lg font-semibold text-white mb-5 flex items-center">
+              <h2 className="text-lg font-semibold text-slate-900 mb-5 flex items-center">
                 <ShieldCheck className="w-5 h-5 mr-2 text-indigo-400" />
                 Service & Cargo Profile
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center">
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5 flex items-center">
                     <Truck className="w-3.5 h-3.5 mr-1.5 text-slate-500" /> Service Type
                   </label>
                   <select 
                     value={serviceType}
                     onChange={(e) => setServiceType(e.target.value)}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all appearance-none"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all appearance-none"
                   >
                     {SERVICE_TYPES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5 flex items-center">
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5 flex items-center">
                     <ShieldAlert className="w-3.5 h-3.5 mr-1.5 text-slate-500" /> Cargo Insurance
                   </label>
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center bg-[#121622] rounded-xl p-1 border border-slate-700/80">
-                      <button type="button" onClick={() => setInsurance(true)} className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${insurance ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white'}`}>Yes</button>
-                      <button type="button" onClick={() => {setInsurance(false); setDeclaredValue('');}} className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${!insurance ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'}`}>No</button>
+                    <div className="flex items-center bg-white rounded-xl p-1 border border-blue-200/80">
+                      <button type="button" onClick={() => setInsurance(true)} className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${insurance ? 'bg-indigo-500 text-white' : 'text-slate-600 hover:text-white'}`}>Yes</button>
+                      <button type="button" onClick={() => {setInsurance(false); setDeclaredValue('');}} className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${!insurance ? 'bg-slate-700 text-slate-900' : 'text-slate-600 hover:text-slate-900'}`}>No</button>
                     </div>
                     {insurance && (
                       <input 
@@ -360,7 +360,7 @@ export default function DynamicQuoteCalculator() {
                         placeholder="Declared Value (₹)"
                         value={declaredValue}
                         onChange={(e) => setDeclaredValue(e.target.value === '' ? '' : Number(e.target.value))}
-                        className="flex-1 bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+                        className="flex-1 bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
                       />
                     )}
                   </div>
@@ -369,31 +369,31 @@ export default function DynamicQuoteCalculator() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Commodity Type</label>
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5">Commodity Type</label>
                   <select 
                     value={commodity}
                     onChange={handleCommodityChange}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all appearance-none"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all appearance-none"
                   >
                     {COMMODITIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">SHC Code</label>
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5">SHC Code</label>
                   <input 
                     type="text" 
                     value={shcCode}
                     onChange={(e) => setShcCode(e.target.value.toUpperCase())}
                     maxLength={3}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-mono text-center uppercase tracking-widest text-sm"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-mono text-center uppercase tracking-widest text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Preferred Carrier</label>
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5">Preferred Carrier</label>
                   <select 
                     value={carrier}
                     onChange={(e) => setCarrier(e.target.value)}
-                    className="w-full bg-[#121622] border border-slate-700/80 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all appearance-none"
+                    className="w-full bg-white border border-blue-200/80 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all appearance-none"
                   >
                     {CARRIERS.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
@@ -413,15 +413,15 @@ export default function DynamicQuoteCalculator() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden border border-slate-700 flex flex-col relative"
+                    className="bg-white backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden border border-blue-200 flex flex-col relative"
                   >
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500"></div>
-                    <div className="p-6 pb-4 border-b border-slate-800 relative overflow-hidden">
+                    <div className="p-6 pb-4 border-b border-blue-200 relative overflow-hidden">
                       <div className="absolute -right-6 -top-6 opacity-5">
                         <Box className="w-32 h-32" />
                       </div>
-                      <h3 className="text-sm font-medium text-slate-400 mb-1 uppercase tracking-wider">Estimated Net Payable</h3>
-                      <div className="text-4xl font-bold text-white tracking-tight">
+                      <h3 className="text-sm font-medium text-slate-600 mb-1 uppercase tracking-wider">Estimated Net Payable</h3>
+                      <div className="text-4xl font-bold text-slate-900 tracking-tight">
                         ₹{formatNum(pricing.netPayable)}
                       </div>
                       <div className="mt-3 flex items-center text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md inline-flex w-fit">
@@ -432,15 +432,15 @@ export default function DynamicQuoteCalculator() {
                     <div className="p-6 flex-grow flex flex-col justify-between space-y-5">
                       
                       <div className="space-y-4">
-                        <div className="flex flex-col pb-3 border-b border-slate-800">
+                        <div className="flex flex-col pb-3 border-b border-blue-200">
                           <div className="flex justify-between items-center">
-                            <span className="text-slate-300 font-medium text-sm flex items-center">
+                            <span className="text-slate-700 font-medium text-sm flex items-center">
                               Base Freight 
                               {pricing.isMinRateApplied && (
                                 <span className="ml-2 px-1.5 py-0.5 bg-indigo-500/20 text-indigo-400 text-[9px] uppercase font-bold rounded">Min Rate</span>
                               )}
                             </span>
-                            <span className="text-white font-semibold text-sm">₹{formatNum(pricing.baseFreight)}</span>
+                            <span className="text-slate-900 font-semibold text-sm">₹{formatNum(pricing.baseFreight)}</span>
                           </div>
                           <div className="text-[11px] text-slate-500 mt-1">
                             {formatNum(chargeableWeight)} kg × ₹{formatNum(pricing.ratePerKg)}/kg
@@ -448,14 +448,14 @@ export default function DynamicQuoteCalculator() {
                         </div>
                         
                         {/* Ancillary Charges Accordion */}
-                        <div className="border border-slate-800 rounded-xl overflow-hidden transition-all duration-300">
+                        <div className="border border-blue-200 rounded-xl overflow-hidden transition-all duration-300">
                           <button 
                             onClick={() => setIsAncillaryExpanded(!isAncillaryExpanded)}
-                            className="w-full bg-[#121622] px-4 py-2.5 flex justify-between items-center hover:bg-slate-800 transition-colors"
+                            className="w-full bg-white px-4 py-2.5 flex justify-between items-center hover:bg-slate-100 transition-colors"
                           >
-                            <span className="text-slate-300 font-medium text-sm">Ancillary & Services</span>
+                            <span className="text-slate-700 font-medium text-sm">Ancillary & Services</span>
                             <div className="flex items-center space-x-2">
-                              <span className="text-white font-semibold text-sm">₹{formatNum(pricing.ancillary.total)}</span>
+                              <span className="text-slate-900 font-semibold text-sm">₹{formatNum(pricing.ancillary.total)}</span>
                               {isAncillaryExpanded ? <ChevronUp className="w-4 h-4 text-slate-500" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
                             </div>
                           </button>
@@ -466,13 +466,13 @@ export default function DynamicQuoteCalculator() {
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
-                                className="bg-slate-900/50 px-4 py-3 space-y-2 border-t border-slate-800 text-xs"
+                                className="bg-white/80 px-4 py-3 space-y-2 border-t border-blue-200 text-xs"
                               >
-                                <div className="flex justify-between"><span className="text-slate-400">AWB Fees</span><span className="text-slate-200">₹{formatNum(pricing.ancillary.awbFeeTotal)}</span></div>
-                                <div className="flex justify-between"><span className="text-slate-400">Admin (AD)</span><span className="text-slate-200">₹{formatNum(pricing.ancillary.adminCharges)}</span></div>
-                                <div className="flex justify-between"><span className="text-slate-400">Delivery Order (DO)</span><span className="text-slate-200">₹{formatNum(pricing.ancillary.deliveryOrder)}</span></div>
-                                <div className="flex justify-between"><span className="text-slate-400">Fuel Surcharge (FS)</span><span className="text-slate-200">₹{formatNum(pricing.ancillary.fuelSurcharge)}</span></div>
-                                <div className="flex justify-between"><span className="text-slate-400">X-Ray (XS)</span><span className="text-slate-200">₹{formatNum(pricing.ancillary.xRayFee)}</span></div>
+                                <div className="flex justify-between"><span className="text-slate-600">AWB Fees</span><span className="text-slate-900">₹{formatNum(pricing.ancillary.awbFeeTotal)}</span></div>
+                                <div className="flex justify-between"><span className="text-slate-600">Admin (AD)</span><span className="text-slate-900">₹{formatNum(pricing.ancillary.adminCharges)}</span></div>
+                                <div className="flex justify-between"><span className="text-slate-600">Delivery Order (DO)</span><span className="text-slate-900">₹{formatNum(pricing.ancillary.deliveryOrder)}</span></div>
+                                <div className="flex justify-between"><span className="text-slate-600">Fuel Surcharge (FS)</span><span className="text-slate-900">₹{formatNum(pricing.ancillary.fuelSurcharge)}</span></div>
+                                <div className="flex justify-between"><span className="text-slate-600">X-Ray (XS)</span><span className="text-slate-900">₹{formatNum(pricing.ancillary.xRayFee)}</span></div>
                                 {pricing.ancillary.pickupCharge > 0 && <div className="flex justify-between text-indigo-300"><span className="">Origin Pickup</span><span className="">₹{formatNum(pricing.ancillary.pickupCharge)}</span></div>}
                                 {pricing.ancillary.deliveryCharge > 0 && <div className="flex justify-between text-indigo-300"><span className="">Dest Delivery</span><span className="">₹{formatNum(pricing.ancillary.deliveryCharge)}</span></div>}
                                 {pricing.ancillary.insurancePremium > 0 && <div className="flex justify-between text-indigo-300"><span className="">Insurance Premium</span><span className="">₹{formatNum(pricing.ancillary.insurancePremium)}</span></div>}
@@ -481,26 +481,26 @@ export default function DynamicQuoteCalculator() {
                           </AnimatePresence>
                         </div>
 
-                        <div className="flex justify-between items-center py-2 border-b border-slate-800">
-                          <span className="text-slate-400 font-medium text-sm">Taxable Amount</span>
-                          <span className="text-white font-semibold text-sm">₹{formatNum(pricing.taxableAmount)}</span>
+                        <div className="flex justify-between items-center py-2 border-b border-blue-200">
+                          <span className="text-slate-600 font-medium text-sm">Taxable Amount</span>
+                          <span className="text-slate-900 font-semibold text-sm">₹{formatNum(pricing.taxableAmount)}</span>
                         </div>
                         
                         <div className="space-y-1 text-xs">
                           {pricing.isInterstate ? (
                             <div className="flex justify-between items-center">
-                              <span className="text-slate-400">IGST (18%) <span className="text-[9px] ml-1 bg-slate-800 px-1.5 py-0.5 rounded text-slate-500 uppercase">Interstate</span></span>
-                              <span className="text-slate-300">₹{formatNum(pricing.igst)}</span>
+                              <span className="text-slate-600">IGST (18%) <span className="text-[9px] ml-1 bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 uppercase">Interstate</span></span>
+                              <span className="text-slate-700">₹{formatNum(pricing.igst)}</span>
                             </div>
                           ) : (
                             <>
                               <div className="flex justify-between items-center mb-1">
-                                <span className="text-slate-400">CGST (9%) <span className="text-[9px] ml-1 bg-slate-800 px-1.5 py-0.5 rounded text-slate-500 uppercase">Intrastate</span></span>
-                                <span className="text-slate-300">₹{formatNum(pricing.cgst)}</span>
+                                <span className="text-slate-600">CGST (9%) <span className="text-[9px] ml-1 bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 uppercase">Intrastate</span></span>
+                                <span className="text-slate-700">₹{formatNum(pricing.cgst)}</span>
                               </div>
                               <div className="flex justify-between items-center">
-                                <span className="text-slate-400">SGST (9%)</span>
-                                <span className="text-slate-300">₹{formatNum(pricing.sgst)}</span>
+                                <span className="text-slate-600">SGST (9%)</span>
+                                <span className="text-slate-700">₹{formatNum(pricing.sgst)}</span>
                               </div>
                             </>
                           )}
@@ -526,13 +526,13 @@ export default function DynamicQuoteCalculator() {
                     key="empty-state"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="bg-slate-900/50 rounded-2xl shadow-sm border border-slate-800 border-dashed p-8 flex flex-col items-center justify-center text-center h-full min-h-[400px]"
+                    className="bg-white/80 rounded-2xl shadow-sm border border-blue-200 border-dashed p-8 flex flex-col items-center justify-center text-center h-full min-h-[400px]"
                   >
-                    <div className="w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center mb-4">
-                      <Box className="w-6 h-6 text-slate-400" />
+                    <div className="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                      <Box className="w-6 h-6 text-slate-600" />
                     </div>
-                    <h3 className="text-base font-semibold text-white mb-2">Awaiting Details</h3>
-                    <p className="text-slate-400 text-xs max-w-xs leading-relaxed">
+                    <h3 className="text-base font-semibold text-slate-900 mb-2">Awaiting Details</h3>
+                    <p className="text-slate-600 text-xs max-w-xs leading-relaxed">
                       Please ensure origin and destination are different, and chargeable weight is greater than zero to see your instant quote.
                     </p>
                   </motion.div>

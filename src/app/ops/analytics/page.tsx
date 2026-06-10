@@ -37,28 +37,28 @@ export default function AnalyticsDashboard() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <BarChart3 className="w-6 h-6 text-fuchsia-500" />
             Revenue & Performance Analytics
           </h1>
-          <p className="text-sm text-slate-400 mt-1">Key metrics and insights for logistics operations.</p>
+          <p className="text-sm text-slate-600 mt-1">Key metrics and insights for logistics operations.</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="relative flex items-center bg-[#121622] border border-slate-800 rounded-lg hover:border-slate-700 transition-colors">
+          <div className="relative flex items-center bg-white border border-blue-200 rounded-lg hover:border-blue-200 transition-colors">
             <Calendar className="w-4 h-4 text-slate-500 absolute left-3 pointer-events-none" />
             <select 
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="pl-9 pr-4 py-2 bg-transparent text-sm text-slate-300 appearance-none focus:outline-none cursor-pointer w-full hover:text-white"
+              className="pl-9 pr-4 py-2 bg-transparent text-sm text-slate-700 appearance-none focus:outline-none cursor-pointer w-full hover:text-slate-900"
             >
-              <option className="bg-[#121622] text-slate-300" value="Last 7 Days">Last 7 Days</option>
-              <option className="bg-[#121622] text-slate-300" value="Last Month">Last Month</option>
-              <option className="bg-[#121622] text-slate-300" value="Last 6 Months">Last 6 Months</option>
+              <option className="bg-white text-slate-700" value="Last 7 Days">Last 7 Days</option>
+              <option className="bg-white text-slate-700" value="Last Month">Last Month</option>
+              <option className="bg-white text-slate-700" value="Last 6 Months">Last 6 Months</option>
             </select>
           </div>
           <button 
             onClick={() => window.print()}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition-colors border border-slate-700"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-lg text-sm font-medium transition-colors border border-blue-200"
           >
             <Download className="w-4 h-4" /> Export PDF
           </button>
@@ -71,12 +71,12 @@ export default function AnalyticsDashboard() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="lg:col-span-2 bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6"
+          className="lg:col-span-2 bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6"
         >
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-lg font-semibold text-white">Monthly Revenue</h2>
-              <p className="text-xs text-slate-400">Total gross revenue across all modes</p>
+              <h2 className="text-lg font-semibold text-slate-900">Monthly Revenue</h2>
+              <p className="text-xs text-slate-600">Total gross revenue across all modes</p>
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold text-emerald-400">{formatINR(displayRevenue.reduce((a, b) => a + b.revenue, 0))}</div>
@@ -86,7 +86,7 @@ export default function AnalyticsDashboard() {
             </div>
           </div>
 
-          <div className="h-[250px] flex items-end justify-between gap-2 sm:gap-4 mt-8 pt-4 border-b border-slate-800 relative pb-6">
+          <div className="h-[250px] flex items-end justify-between gap-2 sm:gap-4 mt-8 pt-4 border-b border-blue-200 relative pb-6">
             {/* Y-axis guidelines */}
             <div className="absolute inset-0 pb-6 flex flex-col justify-between pointer-events-none z-0">
               {[1, 0.75, 0.5, 0.25, 0].map((tick) => (
@@ -98,7 +98,7 @@ export default function AnalyticsDashboard() {
                         : `${(maxRevenue * tick / 1000).toFixed(0)}K`
                       : '0'}
                   </span>
-                  <div className="h-px bg-slate-800 flex-1 border-dashed border-slate-700" />
+                  <div className="h-px bg-slate-100 flex-1 border-dashed border-blue-200" />
                 </div>
               ))}
             </div>
@@ -107,9 +107,9 @@ export default function AnalyticsDashboard() {
             {displayRevenue.map((data, idx) => (
               <div key={data.month} className="flex flex-col justify-end items-center flex-1 h-full z-10 group relative">
                 {/* Tooltip */}
-                <div className="opacity-0 group-hover:opacity-100 absolute -top-8 bg-[#121622] border border-slate-700 text-white text-xs px-2 py-1 rounded transition-opacity whitespace-nowrap pointer-events-none z-20">
+                <div className="opacity-0 group-hover:opacity-100 absolute -top-8 bg-white border border-blue-200 text-slate-900 text-xs px-2 py-1 rounded transition-opacity whitespace-nowrap pointer-events-none z-20">
                   {formatINR(data.revenue)}
-                  <div className="text-slate-400 text-[10px]">{data.shipments} shipments</div>
+                  <div className="text-slate-600 text-[10px]">{data.shipments} shipments</div>
                 </div>
                 
                 {/* The Bar */}
@@ -120,7 +120,7 @@ export default function AnalyticsDashboard() {
                   className="w-full max-w-[40px] bg-gradient-to-t from-fuchsia-600 to-indigo-500 rounded-t-sm"
                 />
                 
-                <span className="text-xs text-slate-400 absolute -bottom-6">{data.month}</span>
+                <span className="text-xs text-slate-600 absolute -bottom-6">{data.month}</span>
               </div>
             ))}
           </div>
@@ -131,21 +131,21 @@ export default function AnalyticsDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6"
+          className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6"
         >
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-white">Carrier Share & OTP</h2>
-            <p className="text-xs text-slate-400">On-time performance by carrier</p>
+            <h2 className="text-lg font-semibold text-slate-900">Carrier Share & OTP</h2>
+            <p className="text-xs text-slate-600">On-time performance by carrier</p>
           </div>
 
           <div className="space-y-5">
             {CARRIER_STATS.map((stat, idx) => (
               <div key={stat.carrier} className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="font-medium text-slate-200">{stat.carrier}</span>
+                  <span className="font-medium text-slate-900">{stat.carrier}</span>
                   <span className="text-fuchsia-400 font-mono">{stat.share}%</span>
                 </div>
-                <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${stat.share}%` }}
@@ -169,38 +169,38 @@ export default function AnalyticsDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="lg:col-span-3 bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl overflow-hidden"
+          className="lg:col-span-3 bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl overflow-hidden"
         >
-          <div className="p-6 border-b border-slate-800 flex justify-between items-center">
+          <div className="p-6 border-b border-blue-200 flex justify-between items-center">
             <div>
-              <h2 className="text-lg font-semibold text-white">Top Routes Performance</h2>
-              <p className="text-xs text-slate-400">Profitability and efficiency by sector</p>
+              <h2 className="text-lg font-semibold text-slate-900">Top Routes Performance</h2>
+              <p className="text-xs text-slate-600">Profitability and efficiency by sector</p>
             </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-900/90 border-b border-slate-800">
+              <thead className="bg-white border-b border-blue-200">
                 <tr>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Sector / Route</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Shipments</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Revenue</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Avg Transit</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">OTP Score</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">Sector / Route</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">Shipments</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">Revenue</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">Avg Transit</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase tracking-wider">OTP Score</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/50">
+              <tbody className="divide-y divide-slate-200">
                 {ROUTE_PERFORMANCE.map((route, idx) => (
                   <motion.tr 
                     key={route.route}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 + (idx * 0.1) }}
-                    className="hover:bg-slate-800/30 transition-colors"
+                    className="hover:bg-slate-100/30 transition-colors"
                   >
-                    <td className="px-6 py-4 whitespace-nowrap font-medium text-white">{route.route}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-slate-300">{route.shipments}</td>
+                    <td className="px-6 py-4 whitespace-nowrap font-medium text-slate-900">{route.route}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-slate-700">{route.shipments}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-emerald-400 font-mono">{formatINR(route.revenue)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-slate-300">{route.avgDelivery}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-slate-700">{route.avgDelivery}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${route.onTime > 95 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
                         {route.onTime}%

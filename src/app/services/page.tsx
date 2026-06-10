@@ -54,8 +54,8 @@ export default function ServicesPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, idx) => (
-            <div key={idx} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 hover:shadow-lg transition-shadow group">
-              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 border border-slate-100 group-hover:bg-white transition-colors">
+            <div key={idx} className="bg-white rounded-2xl shadow-sm border border-blue-200 p-8 hover:shadow-lg transition-shadow group">
+              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 border border-blue-100 group-hover:bg-white transition-colors">
                 {service.icon}
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">{service.title}</h3>
@@ -81,7 +81,7 @@ export default function ServicesPage() {
         <p className="text-lg text-slate-600 mb-8">
           Our logistics engineers can design a bespoke supply chain strategy specifically for your unique requirements.
         </p>
-        <Link href="/contact" className="inline-block px-8 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg transition-colors">
+        <Link href="/contact" className="inline-block px-8 py-3 bg-white hover:bg-slate-100 text-slate-900 font-bold rounded-lg transition-colors">
           Contact Our Experts
         </Link>
       </div>

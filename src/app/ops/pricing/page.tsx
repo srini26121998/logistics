@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-type Rate = {
+// Mock Data
+interface Rate {
   id: number;
   origin: string;
   dest: string;
@@ -28,7 +29,7 @@ type Rate = {
   handling: number;
   active: boolean;
   isNew?: boolean;
-};
+}
 
 const INITIAL_RATES: Rate[] = [
   { id: 1, origin: "PNQ", dest: "MAA", airline: "IndiGo 6E", baseRate: 45, fuelSurcharge: 15, handling: 5, active: true },
@@ -101,7 +102,7 @@ export default function PricingAdmin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-slate-200 font-sans selection:bg-indigo-500/30 pt-8 pb-24">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-500/30 pt-8 pb-24">
       
       {/* Toast Notification */}
       <AnimatePresence>
@@ -118,7 +119,7 @@ export default function PricingAdmin() {
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -126,11 +127,11 @@ export default function PricingAdmin() {
           className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4"
         >
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
               <Settings className="w-8 h-8 text-indigo-500" />
               Pricing & Tariff Admin
             </h1>
-            <p className="text-slate-400 mt-2">
+            <p className="text-slate-600 mt-2">
               Manage live airline rates, surcharges, and routing fees.
             </p>
           </div>
@@ -144,7 +145,7 @@ export default function PricingAdmin() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-4 mb-6 flex items-center gap-4"
+          className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-4 mb-6 flex items-center gap-4"
         >
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
@@ -153,10 +154,10 @@ export default function PricingAdmin() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search route (e.g., PNQ) or airline..."
-              className="w-full bg-[#121622] border border-slate-700 rounded-xl py-2 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+              className="w-full bg-white border border-blue-200 rounded-xl py-2 pl-10 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
             />
           </div>
-          <div className="text-sm text-slate-400">
+          <div className="text-sm text-slate-600">
             Showing {filteredRates.length} active routes
           </div>
         </motion.div>
@@ -166,11 +167,11 @@ export default function PricingAdmin() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl overflow-hidden"
+          className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl overflow-hidden"
         >
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-[#121622] border-b border-slate-800 text-slate-400 uppercase text-xs font-semibold">
+            <table className="w-full text-left text-sm text-slate-700">
+              <thead className="bg-white border-b border-blue-200 text-slate-600 uppercase text-xs font-semibold">
                 <tr>
                   <th className="px-6 py-4">Route</th>
                   <th className="px-6 py-4">Airline / Carrier</th>
@@ -182,15 +183,15 @@ export default function PricingAdmin() {
                   <th className="px-6 py-4 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/50">
+              <tbody className="divide-y divide-slate-200">
                 {filteredRates.map((rate) => (
-                  <tr key={rate.id} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="px-6 py-4 font-medium text-white">
+                  <tr key={rate.id} className="hover:bg-slate-100/30 transition-colors">
+                    <td className="px-6 py-4 font-medium text-slate-900">
                       {editingId === rate.id && rate.isNew ? (
                         <div className="flex items-center gap-2">
-                          <input type="text" placeholder="Orig" value={editForm.origin} onChange={(e) => setEditForm({...editForm, origin: e.target.value.toUpperCase()})} className="w-16 bg-[#121622] border border-indigo-500 rounded px-2 py-1 text-white uppercase" maxLength={3} />
+                          <input type="text" placeholder="Orig" value={editForm.origin} onChange={(e) => setEditForm({...editForm, origin: e.target.value.toUpperCase()})} className="w-16 bg-white border border-indigo-500 rounded px-2 py-1 text-slate-900 uppercase" maxLength={3} />
                           <ArrowRight className="w-3 h-3 text-slate-500" />
-                          <input type="text" placeholder="Dest" value={editForm.dest} onChange={(e) => setEditForm({...editForm, dest: e.target.value.toUpperCase()})} className="w-16 bg-[#121622] border border-indigo-500 rounded px-2 py-1 text-white uppercase" maxLength={3} />
+                          <input type="text" placeholder="Dest" value={editForm.dest} onChange={(e) => setEditForm({...editForm, dest: e.target.value.toUpperCase()})} className="w-16 bg-white border border-indigo-500 rounded px-2 py-1 text-slate-900 uppercase" maxLength={3} />
                         </div>
                       ) : (
                         <div className="flex items-center gap-2">
@@ -200,7 +201,7 @@ export default function PricingAdmin() {
                     </td>
                     <td className="px-6 py-4">
                       {editingId === rate.id && rate.isNew ? (
-                        <input type="text" placeholder="Airline Name" value={editForm.airline} onChange={(e) => setEditForm({...editForm, airline: e.target.value})} className="w-32 bg-[#121622] border border-indigo-500 rounded px-2 py-1 text-white" />
+                        <input type="text" placeholder="Airline Name" value={editForm.airline} onChange={(e) => setEditForm({...editForm, airline: e.target.value})} className="w-32 bg-white border border-indigo-500 rounded px-2 py-1 text-slate-900" />
                       ) : (
                         rate.airline
                       )}
@@ -210,13 +211,13 @@ export default function PricingAdmin() {
                     {editingId === rate.id ? (
                       <>
                         <td className="px-6 py-4 text-right">
-                          <input type="number" value={editForm.baseRate} onChange={(e) => setEditForm({...editForm, baseRate: Number(e.target.value)})} className="w-20 bg-[#121622] border border-indigo-500 rounded px-2 py-1 text-right text-white" />
+                          <input type="number" value={editForm.baseRate} onChange={(e) => setEditForm({...editForm, baseRate: Number(e.target.value)})} className="w-20 bg-white border border-indigo-500 rounded px-2 py-1 text-right text-slate-900" />
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <input type="number" value={editForm.fuelSurcharge} onChange={(e) => setEditForm({...editForm, fuelSurcharge: Number(e.target.value)})} className="w-20 bg-[#121622] border border-indigo-500 rounded px-2 py-1 text-right text-white" />
+                          <input type="number" value={editForm.fuelSurcharge} onChange={(e) => setEditForm({...editForm, fuelSurcharge: Number(e.target.value)})} className="w-20 bg-white border border-indigo-500 rounded px-2 py-1 text-right text-slate-900" />
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <input type="number" value={editForm.handling} onChange={(e) => setEditForm({...editForm, handling: Number(e.target.value)})} className="w-20 bg-[#121622] border border-indigo-500 rounded px-2 py-1 text-right text-white" />
+                          <input type="number" value={editForm.handling} onChange={(e) => setEditForm({...editForm, handling: Number(e.target.value)})} className="w-20 bg-white border border-indigo-500 rounded px-2 py-1 text-right text-slate-900" />
                         </td>
                         <td className="px-6 py-4 text-right font-bold text-indigo-400">
                           {editForm.baseRate + editForm.fuelSurcharge + editForm.handling}
@@ -236,7 +237,7 @@ export default function PricingAdmin() {
                     <td className="px-6 py-4 text-center">
                       <button 
                         onClick={() => handleToggleActive(rate.id)}
-                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${rate.active ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20' : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700'}`}
+                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${rate.active ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20' : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-700'}`}
                       >
                         {rate.active ? 'Active' : 'Inactive'}
                       </button>
@@ -248,16 +249,16 @@ export default function PricingAdmin() {
                           <button onClick={handleSave} className="p-1.5 bg-indigo-500/20 text-indigo-400 rounded-lg hover:bg-indigo-500/30 transition-colors" title="Save">
                             <Save className="w-4 h-4" />
                           </button>
-                          <button onClick={() => handleCancel(rate)} className="p-1.5 bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition-colors" title="Cancel">
+                          <button onClick={() => handleCancel(rate)} className="p-1.5 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-700 transition-colors" title="Cancel">
                             <X className="w-4 h-4" />
                           </button>
                         </div>
                       ) : (
                         <div className="flex items-center justify-center gap-2 transition-opacity">
-                          <button onClick={() => handleEdit(rate)} className="p-1.5 bg-slate-800 text-slate-300 rounded-lg hover:bg-indigo-500/30 hover:text-indigo-400 transition-colors" title="Edit">
+                          <button onClick={() => handleEdit(rate)} className="p-1.5 bg-slate-100 text-slate-700 rounded-lg hover:bg-indigo-500/30 hover:text-indigo-400 transition-colors" title="Edit">
                             <Edit2 className="w-4 h-4" />
                           </button>
-                          <button onClick={() => handleDelete(rate.id)} className="p-1.5 bg-slate-800 text-slate-300 rounded-lg hover:bg-rose-500/30 hover:text-rose-400 transition-colors" title="Delete">
+                          <button onClick={() => handleDelete(rate.id)} className="p-1.5 bg-slate-100 text-slate-700 rounded-lg hover:bg-rose-500/30 hover:text-rose-400 transition-colors" title="Delete">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>

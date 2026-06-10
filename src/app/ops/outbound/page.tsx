@@ -40,11 +40,11 @@ export default function OutboundProcessingPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
           <PlaneTakeoff className="w-6 h-6 text-indigo-500" />
           Outbound Buildup
         </h1>
-        <p className="text-sm text-slate-400 mt-1">Scan cargo and assign to ULDs/Flights for departure.</p>
+        <p className="text-sm text-slate-600 mt-1">Scan cargo and assign to ULDs/Flights for departure.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -54,14 +54,14 @@ export default function OutboundProcessingPage() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6"
+            className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6"
           >
-            <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
               <QrCode className="w-5 h-5 text-indigo-400" /> Scanner Input
             </h2>
             <form onSubmit={handleScan} className="space-y-4">
               <div>
-                <label className="text-xs text-slate-400 mb-1 block">Scan AWB/LR Barcode</label>
+                <label className="text-xs text-slate-600 mb-1 block">Scan AWB/LR Barcode</label>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                   <input
@@ -70,7 +70,7 @@ export default function OutboundProcessingPage() {
                     value={scannedAwb}
                     onChange={(e) => setScannedAwb(e.target.value)}
                     placeholder="e.g. 312-66761752"
-                    className="w-full bg-[#0A0A0B] border border-slate-700 rounded-xl pl-9 pr-4 py-3 text-white focus:outline-none focus:border-indigo-500 font-mono text-sm"
+                    className="w-full bg-slate-50 border border-blue-200 rounded-xl pl-9 pr-4 py-3 text-slate-900 focus:outline-none focus:border-indigo-500 font-mono text-sm"
                   />
                 </div>
                 {error && (
@@ -92,16 +92,16 @@ export default function OutboundProcessingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6"
+            className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6"
           >
-            <h2 className="text-lg font-semibold text-white mb-4">Build Status</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-4">Build Status</h2>
             <div className="space-y-4">
-              <div className="bg-[#121622] p-4 rounded-xl border border-slate-800 flex justify-between items-center">
-                <span className="text-sm text-slate-400">Scanned Items</span>
-                <span className="text-xl font-bold text-white">{scannedList.length}</span>
+              <div className="bg-white p-4 rounded-xl border border-blue-200 flex justify-between items-center">
+                <span className="text-sm text-slate-600">Scanned Items</span>
+                <span className="text-xl font-bold text-slate-900">{scannedList.length}</span>
               </div>
-              <div className="bg-[#121622] p-4 rounded-xl border border-slate-800 flex justify-between items-center">
-                <span className="text-sm text-slate-400">Total Weight</span>
+              <div className="bg-white p-4 rounded-xl border border-blue-200 flex justify-between items-center">
+                <span className="text-sm text-slate-600">Total Weight</span>
                 <span className="text-xl font-bold text-indigo-400">
                   {scannedList.reduce((acc, s) => acc + parseFloat(s.weight), 0)} kg
                 </span>
@@ -127,15 +127,15 @@ export default function OutboundProcessingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl h-[calc(100vh-140px)] flex flex-col overflow-hidden"
+            className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl h-[calc(100vh-140px)] flex flex-col overflow-hidden"
           >
-            <div className="p-4 border-b border-slate-800 bg-slate-900/80">
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <div className="p-4 border-b border-blue-200 bg-white">
+              <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                 <Box className="w-5 h-5 text-indigo-400" /> Scanned Cargo Feed
               </h2>
             </div>
             
-            <div className="flex-1 overflow-auto p-4 custom-scrollbar bg-[#0A0A0B]/30">
+            <div className="flex-1 overflow-auto p-4 custom-scrollbar bg-slate-50/30">
               <div className="space-y-3">
                 <AnimatePresence>
                   {scannedList.length === 0 && (
@@ -155,21 +155,21 @@ export default function OutboundProcessingPage() {
                       initial={{ opacity: 0, x: -20, scale: 0.95 }}
                       animate={{ opacity: 1, x: 0, scale: 1 }}
                       transition={{ duration: 0.2 }}
-                      className="bg-[#121622] border border-slate-700 rounded-xl p-4 flex items-center justify-between"
+                      className="bg-white border border-blue-200 rounded-xl p-4 flex items-center justify-between"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
                           <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                         </div>
                         <div>
-                          <div className="font-mono font-bold text-white text-base">{item.awb}</div>
-                          <div className="text-xs text-slate-400 mt-0.5">
+                          <div className="font-mono font-bold text-slate-900 text-base">{item.awb}</div>
+                          <div className="text-xs text-slate-600 mt-0.5">
                             {item.origin} → {item.destination} • {item.carrier}
                           </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm font-semibold text-slate-200">{item.pieces} NOP</div>
+                        <div className="text-sm font-semibold text-slate-900">{item.pieces} NOP</div>
                         <div className="text-xs text-slate-500 font-mono mt-0.5">{item.weight}</div>
                       </div>
                     </motion.div>

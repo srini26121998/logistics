@@ -5,17 +5,11 @@
 }
 
 :root {
-  --background: #0A0A0B;
-  --foreground: #ededed;
-  color-scheme: dark;
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0A0A0B;
-    --foreground: #ededed;
-  }
-}
+
 
 html, body {
   min-height: 100vh;
@@ -56,14 +50,7 @@ html {
   background-color: rgba(156, 163, 175, 0.7);
 }
 
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(71, 85, 105, 0.6);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(71, 85, 105, 0.9);
-  }
-}
+
 
 /* Slim Custom Scrollbar for inner containers */
 .custom-scrollbar::-webkit-scrollbar {

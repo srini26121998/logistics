@@ -90,8 +90,8 @@ export default function InboundOperations() {
   }, [actualPieces, booking?.expectedPieces]);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-slate-200 font-sans selection:bg-indigo-500/30 pt-8 pb-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-500/30 pt-8 pb-24">
+      <div className="w-full">
         
         {/* Header */}
         <motion.div
@@ -99,11 +99,11 @@ export default function InboundOperations() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
             <ScanLine className="w-8 h-8 text-indigo-500" />
             Inbound Cargo Processing
           </h1>
-          <p className="text-slate-400 mt-2 flex items-center gap-2">
+          <p className="text-slate-600 mt-2 flex items-center gap-2">
             <User className="w-4 h-4" /> Staff ID: EMP-492 • DEL Hub
           </p>
         </motion.div>
@@ -113,10 +113,10 @@ export default function InboundOperations() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6 relative overflow-hidden"
+            className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6 relative overflow-hidden"
           >
             <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
-            <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
               <Search className="w-5 h-5 text-indigo-400" />
               Scan Booking (LR Number)
             </h2>
@@ -128,7 +128,7 @@ export default function InboundOperations() {
                   value={scanInput}
                   onChange={(e) => setScanInput(e.target.value.toUpperCase())}
                   placeholder="e.g. LR-892345"
-                  className="w-full bg-[#121622] border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all uppercase placeholder:normal-case"
+                  className="w-full bg-white border border-blue-200 rounded-xl py-3 pl-12 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all uppercase placeholder:normal-case"
                 />
               </div>
               <button
@@ -149,8 +149,8 @@ export default function InboundOperations() {
               </p>
             )}
             <div className="mt-4 flex gap-2">
-               <button onClick={() => setScanInput(SHIPMENTS[0]?.lrNumber || "LR-892345")} className="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-300 transition-colors">Use {SHIPMENTS[0]?.lrNumber || "LR-892345"} (Gen)</button>
-               <button onClick={() => setScanInput(SHIPMENTS[1]?.lrNumber || "LR-100293")} className="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-300 transition-colors">Use {SHIPMENTS[1]?.lrNumber || "LR-100293"} (Pharma)</button>
+               <button onClick={() => setScanInput(SHIPMENTS[0]?.lrNumber || "LR-892345")} className="text-xs bg-slate-100 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-700 transition-colors">Use {SHIPMENTS[0]?.lrNumber || "LR-892345"} (Gen)</button>
+               <button onClick={() => setScanInput(SHIPMENTS[1]?.lrNumber || "LR-100293")} className="text-xs bg-slate-100 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-700 transition-colors">Use {SHIPMENTS[1]?.lrNumber || "LR-100293"} (Pharma)</button>
             </div>
           </motion.div>
 
@@ -164,35 +164,35 @@ export default function InboundOperations() {
                 className="space-y-6"
               >
                 {/* Step 2: Booking Details */}
-                <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+                <div className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
                     <div>
-                      <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
                         Booking: {booking.lrNumber}
                       </h2>
-                      <p className="text-sm text-slate-400">{booking.shipper} → {booking.consignee}</p>
+                      <p className="text-sm text-slate-600">{booking.shipper} → {booking.consignee}</p>
                     </div>
-                    <div className="mt-2 sm:mt-0 px-3 py-1 bg-slate-800/80 border border-slate-700 rounded-lg text-sm text-slate-300 font-mono">
+                    <div className="mt-2 sm:mt-0 px-3 py-1 bg-slate-100/80 border border-blue-200 rounded-lg text-sm text-slate-700 font-mono">
                       SHC: <span className={booking.shc === 'GEN' ? 'text-green-400' : 'text-blue-400'}>{booking.shc}</span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                     <div className="bg-[#121622] p-4 rounded-xl border border-slate-800/50">
+                     <div className="bg-white p-4 rounded-xl border border-blue-200/50">
                         <div className="text-xs text-slate-500 mb-1">Route</div>
-                        <div className="font-semibold text-white">{booking.origin} → {booking.destination}</div>
+                        <div className="font-semibold text-slate-900">{booking.origin} → {booking.destination}</div>
                      </div>
-                     <div className="bg-[#121622] p-4 rounded-xl border border-slate-800/50">
+                     <div className="bg-white p-4 rounded-xl border border-blue-200/50">
                         <div className="text-xs text-slate-500 mb-1">Expected Pieces</div>
-                        <div className="font-semibold text-white text-lg">{booking.expectedPieces}</div>
+                        <div className="font-semibold text-slate-900 text-lg">{booking.expectedPieces}</div>
                      </div>
-                     <div className="bg-[#121622] p-4 rounded-xl border border-slate-800/50">
+                     <div className="bg-white p-4 rounded-xl border border-blue-200/50">
                         <div className="text-xs text-slate-500 mb-1">Total Weight</div>
-                        <div className="font-semibold text-white">{booking.weight}</div>
+                        <div className="font-semibold text-slate-900">{booking.weight}</div>
                      </div>
-                     <div className="bg-[#121622] p-4 rounded-xl border border-slate-800/50">
+                     <div className="bg-white p-4 rounded-xl border border-blue-200/50">
                         <div className="text-xs text-slate-500 mb-1">Commodity</div>
-                        <div className="font-semibold text-white">{booking.commodity}</div>
+                        <div className="font-semibold text-slate-900">{booking.commodity}</div>
                      </div>
                   </div>
                 </div>
@@ -203,8 +203,8 @@ export default function InboundOperations() {
                   {/* Left Column: Verification & X-Ray */}
                   <div className="space-y-6">
                     {/* Piece Count */}
-                    <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
-                      <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                    <div className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6">
+                      <h3 className="text-sm font-medium text-slate-600 mb-4 flex items-center gap-2">
                         <Package className="w-4 h-4" /> 1. Piece Count Verification
                       </h3>
                       <div className="flex gap-3 items-center">
@@ -213,7 +213,7 @@ export default function InboundOperations() {
                           value={actualPieces}
                           onChange={(e) => setActualPieces(e.target.value === "" ? "" : Number(e.target.value))}
                           placeholder="Actual Pieces"
-                          className="w-32 bg-[#121622] border border-slate-700 rounded-xl py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-32 bg-white border border-blue-200 rounded-xl py-2 px-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
                         <div className="text-sm">/ {booking.expectedPieces} expected</div>
                       </div>
@@ -230,9 +230,9 @@ export default function InboundOperations() {
                     </div>
 
                     {/* Receive & X-Ray */}
-                    <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <div className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6 space-y-4">
                       <div>
-                        <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                        <h3 className="text-sm font-medium text-slate-600 mb-4 flex items-center gap-2">
                           <Clock className="w-4 h-4" /> 2. Inbound Reception
                         </h3>
                         <button
@@ -241,7 +241,7 @@ export default function InboundOperations() {
                             toast.success("Inbound received logged successfully");
                           }}
                           disabled={!actualPieces || isReceived}
-                          className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${isReceived ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-slate-800 hover:bg-slate-700 text-white disabled:opacity-50 border border-slate-700'}`}
+                          className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${isReceived ? 'bg-green-500/10 text-green-600 border border-green-500/30' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 disabled:opacity-50 border border-slate-300'}`}
                         >
                           {isReceived ? <><CheckCircle2 className="w-5 h-5" /> Inbound Received Logged</> : "Mark Inbound Received"}
                         </button>
@@ -252,11 +252,11 @@ export default function InboundOperations() {
                         )}
                       </div>
 
-                      <div className="pt-4 border-t border-slate-800/50">
-                        <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                      <div className="pt-4 border-t border-blue-200/50">
+                        <h3 className="text-sm font-medium text-slate-600 mb-4 flex items-center gap-2">
                           <ShieldCheck className="w-4 h-4" /> 3. Security Clearance
                         </h3>
-                        <label className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${isXrayCleared ? 'bg-indigo-500/10 border-indigo-500/50' : 'bg-[#121622] border-slate-700/80 hover:border-slate-500'}`}
+                        <label className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${isXrayCleared ? 'bg-indigo-500/10 border-indigo-500/50' : 'bg-white border-slate-300/80 hover:border-slate-500'}`}
                           onClick={() => {
                             if (!isXrayCleared) {
                               setIsXrayCleared(true);
@@ -264,10 +264,10 @@ export default function InboundOperations() {
                             }
                           }}>
                           <div className="flex items-center gap-3">
-                            <div className={`w-6 h-6 rounded-md flex items-center justify-center border ${isXrayCleared ? 'bg-indigo-500 border-indigo-500' : 'bg-slate-800 border-slate-600'}`}>
-                              {isXrayCleared && <CheckCircle2 className="w-4 h-4 text-white" />}
+                            <div className={`w-6 h-6 rounded-md flex items-center justify-center border ${isXrayCleared ? 'bg-indigo-500 border-indigo-500' : 'bg-slate-100 border-slate-300'}`}>
+                              {isXrayCleared && <CheckCircle2 className="w-4 h-4 text-slate-900" />}
                             </div>
-                            <span className={isXrayCleared ? 'text-indigo-300 font-medium' : 'text-slate-300'}>X-Ray Cleared</span>
+                            <span className={isXrayCleared ? 'text-indigo-300 font-medium' : 'text-slate-700'}>X-Ray Cleared</span>
                           </div>
                           <span className="text-xs text-slate-500">{booking.shc} Validated</span>
                         </label>
@@ -276,14 +276,14 @@ export default function InboundOperations() {
                   </div>
 
                   {/* Right Column: Flight Assignment & AWB */}
-                  <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6 flex flex-col">
-                    <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                  <div className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-2xl p-6 flex flex-col">
+                    <h3 className="text-sm font-medium text-slate-600 mb-4 flex items-center gap-2">
                       <Plane className="w-4 h-4" /> 4. Flight Assignment
                     </h3>
                     
                     <div className="space-y-3 mb-8">
                       {FLIGHTS.map(flight => (
-                        <label key={flight.id} className={`flex items-center p-4 rounded-xl border cursor-pointer transition-all ${selectedFlight === flight.id ? 'bg-indigo-500/20 border-indigo-500 shadow-[0_0_15px_rgba(79,70,229,0.15)]' : 'bg-[#121622] border-slate-700/80 hover:border-slate-500'}`}>
+                        <label key={flight.id} className={`flex items-center p-4 rounded-xl border cursor-pointer transition-all ${selectedFlight === flight.id ? 'bg-indigo-500/20 border-indigo-500 shadow-[0_0_15px_rgba(79,70,229,0.15)]' : 'bg-white border-slate-300/80 hover:border-slate-500'}`}>
                           <input
                             type="radio"
                             name="flight"
@@ -297,22 +297,22 @@ export default function InboundOperations() {
                           />
                           <div className="flex-1 flex justify-between items-center">
                             <div>
-                              <div className="font-medium text-slate-200">{flight.name}</div>
+                              <div className="font-medium text-slate-900">{flight.name}</div>
                               <div className="text-xs text-slate-500">{flight.time}</div>
                             </div>
-                            <div className={`w-4 h-4 rounded-full border-2 ${selectedFlight === flight.id ? 'border-indigo-400 bg-indigo-500' : 'border-slate-600'}`}></div>
+                            <div className={`w-4 h-4 rounded-full border-2 ${selectedFlight === flight.id ? 'border-indigo-400 bg-indigo-500' : 'border-slate-300'}`}></div>
                           </div>
                         </label>
                       ))}
                     </div>
 
-                    <div className="mt-auto pt-6 border-t border-slate-800/50">
-                      <h3 className="text-sm font-medium text-slate-400 mb-4 flex items-center gap-2">
+                    <div className="mt-auto pt-6 border-t border-blue-200/50">
+                      <h3 className="text-sm font-medium text-slate-600 mb-4 flex items-center gap-2">
                         <FileText className="w-4 h-4" /> 5. Documentation
                       </h3>
                       <Link 
                         href={`/ops/awb/new?lr=${booking.lrNumber}&origin=${booking.origin}&dest=${booking.destination}&wt=${parseFloat(booking.weight)}&com=${booking.shc}`}
-                        className={`w-full py-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${isReceived && isXrayCleared && selectedFlight ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-[0_0_20px_rgba(79,70,229,0.4)] hover:shadow-[0_0_30px_rgba(79,70,229,0.6)]' : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'}`}
+                        className={`w-full py-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${isReceived && isXrayCleared && selectedFlight ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-[0_0_20px_rgba(79,70,229,0.4)] hover:shadow-[0_0_30px_rgba(79,70,229,0.6)]' : 'bg-slate-100 text-slate-500 cursor-not-allowed border border-slate-300'}`}
                         onClick={(e) => {
                           if (!(isReceived && isXrayCleared && selectedFlight)) {
                             e.preventDefault();

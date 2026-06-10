@@ -25,7 +25,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           
           {/* Contact Form */}
-          <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-12 relative overflow-hidden">
+          <div className="bg-white rounded-3xl shadow-xl border border-blue-100 p-8 sm:p-12 relative overflow-hidden">
             {isSubmitted ? (
               <div className="absolute inset-0 bg-indigo-600 flex flex-col items-center justify-center text-white z-10 p-8 text-center animate-in fade-in duration-300">
                 <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-6">
@@ -44,28 +44,28 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">First Name</label>
-                  <input required type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
+                  <input required type="text" className="w-full bg-slate-50 border border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name</label>
-                  <input required type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
+                  <input required type="text" className="w-full bg-slate-50 border border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
-                  <input required type="email" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
+                  <input required type="email" className="w-full bg-slate-50 border border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">Company</label>
-                  <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
+                  <input type="text" className="w-full bg-slate-50 border border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Inquiry Type</label>
-                <select className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                <select className="w-full bg-slate-50 border border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                   <option>Sales / Freight Quote</option>
                   <option>Shipment Support</option>
                   <option>Customs Clearance</option>
@@ -76,7 +76,7 @@ export default function ContactPage() {
 
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Message</label>
-                <textarea required rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"></textarea>
+                <textarea required rows={4} className="w-full bg-slate-50 border border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"></textarea>
               </div>
 
               <button type="submit" className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-indigo-200 flex items-center justify-center gap-2">
@@ -135,10 +135,10 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl p-8 text-white relative overflow-hidden">
+            <div className="bg-white rounded-2xl p-8 text-slate-900 relative overflow-hidden">
               <div className="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-indigo-500 rounded-full blur-3xl opacity-50"></div>
               <h3 className="text-xl font-bold mb-2">Need Immediate Assistance?</h3>
-              <p className="text-slate-300 mb-6">Our AOG / Critical shipments desk is available round the clock.</p>
+              <p className="text-slate-700 mb-6">Our AOG / Critical shipments desk is available round the clock.</p>
               <a href="tel:+919876543210" className="inline-flex items-center justify-center w-full py-3 bg-white text-slate-900 font-bold rounded-xl hover:bg-indigo-50 transition-colors">
                 Call Critical Support
               </a>
